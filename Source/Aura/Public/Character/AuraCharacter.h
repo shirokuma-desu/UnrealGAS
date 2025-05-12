@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AuraCharacter.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class AURA_API AAuraCharacter : public ACharacter
 {
 	GENERATED_BODY()
@@ -19,11 +19,10 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UPROPERTY(EditAnywhere, Category= "Mesh| Weapon")
+	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
 
+public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 };
