@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerController.generated.h"
 
+class IIInteraction;
 struct FInputActionValue;
 class UInputMappingContext;
 class UInputAction;
@@ -22,6 +23,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void PlayerTick(float DeltaTime) override;
 
 private:
 	//input mapping context
@@ -33,4 +35,9 @@ private:
 	TObjectPtr<UInputAction> MoveAction;
 
 	void Move(const FInputActionValue& InputActionValue);
+	void CursorTrace();
+
+	TScriptInterface<IIInteraction> LastActor;
+	TScriptInterface<IIInteraction> ThisActor;
+	
 };

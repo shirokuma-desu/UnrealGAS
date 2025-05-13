@@ -4,6 +4,7 @@
 #include "PlayerControllers/MyPlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Interfaces/IInteraction.h"
 
 AMyPlayerController::AMyPlayerController()
 {
@@ -42,6 +43,12 @@ void AMyPlayerController::SetupInputComponent()
 	EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AMyPlayerController::Move);
 }
 
+void AMyPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CursorTrace();
+}
+
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 {
 	const FVector2D InputAxisVector2D = InputActionValue.Get<FVector2D>();
@@ -56,4 +63,40 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 		ControllerPawn->AddMovementInput(ForwardDirection,InputAxisVector2D.Y);
 		ControllerPawn->AddMovementInput(RightDirection,InputAxisVector2D.X);
 	}
+}
+
+void AMyPlayerController::CursorTrace()
+{
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,HitResult);
+	if (!HitResult.bBlockingHit) return;
+
+	LastActor = ThisActor;
+	ThisActor = HitResult.GetActor();
+
+	if (!LastActor && !ThisActor)
+	{
+		// A. Cả hai đều null -> Không làm gì
+	}
+	else if (!LastActor && ThisActor)
+	{
+		// B. Chỉ ThisActor có giá trị -> Highlight ThisActor
+		ThisActor->HightLightActor();
+	}
+	else if (LastActor && !ThisActor)
+	{
+		// C. Chỉ LastActor có giá trị -> UnHighlight LastActor
+		LastActor->UnHighLightActor();
+	}
+	else if (LastActor != ThisActor)
+	{
+		// D. Cả hai đều có giá trị, nhưng khác nhau
+		LastActor->UnHighLightActor();
+		ThisActor->HightLightActor();
+	}
+	else
+	{
+		// E. Cả hai đều là cùng một actor -> Không làm gì
+	}
+
 }
