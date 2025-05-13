@@ -5,10 +5,10 @@
 
 void AEnemy::HightLightActor()
 {
-	bIsHighLight = true;
+	OnHoverHappened.Broadcast();
 }
 
 void AEnemy::UnHighLightActor()
 {
-	bIsHighLight = false;
+	OnNotHoverEnemyHappened.Broadcast();
 }
