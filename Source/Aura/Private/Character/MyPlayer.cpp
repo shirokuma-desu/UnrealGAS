@@ -3,7 +3,9 @@
 
 #include "Character/MyPlayer.h"
 
+#include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/MyPlayerState.h"
 
 AMyPlayer::AMyPlayer()
 {
@@ -17,4 +19,27 @@ AMyPlayer::AMyPlayer()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	
+}
+
+void AMyPlayer::InitAbilityActorInfo()
+{
+	AMyPlayerState* AuraPlayerState = GetPlayerState<AMyPlayerState>();
+	check(AuraPlayerState);
+	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
+	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	AttributeSet = AuraPlayerState->GetAttributeSet();
+}
+
+void AMyPlayer::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	//init ability actor information for the server
+	InitAbilityActorInfo();
+}
+
+void AMyPlayer::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	//init ability actor information for the client
+	InitAbilityActorInfo();
 }

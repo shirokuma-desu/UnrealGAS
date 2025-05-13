@@ -3,26 +3,37 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
 #include "AuraCharacter.generated.h"
 
+class UAbilitySystemComponent;
+class UAttributeSet;
 UCLASS(Abstract)
-class AURA_API AAuraCharacter : public ACharacter
+class AURA_API AAuraCharacter : public ACharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+	
 	AAuraCharacter();
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	//* IAbilitySystemInterface *//
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
+	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
 protected:
-	// Called when the game starts or when spawned
+	
 	virtual void BeginPlay() override;
 
+	//var
 	UPROPERTY(EditAnywhere, Category= "Mesh| Weapon", BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
-
-public:
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY()
+	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	UPROPERTY()
+	TObjectPtr<UAttributeSet> AttributeSet;
+private:
+	
 };

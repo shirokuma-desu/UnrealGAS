@@ -19,14 +19,19 @@ class AURA_API AEnemy : public AAuraCharacter, public IIInteraction
 {
 	GENERATED_BODY()
 public:
+	
+	AEnemy();
+	
 	UPROPERTY(BlueprintAssignable, Category = "Events|Highlight")
 	FOnHoverEnemy OnHoverHappened;
 	UPROPERTY(BlueprintAssignable, Category = "Events|Highlight")
 	FOnNotHoverEnemy OnNotHoverEnemyHappened;
-	
+	//* Interaction interface
 	virtual void HightLightActor() override;
 	virtual void UnHighLightActor() override;
 	
+protected:
+	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bIsHighLight = false;
