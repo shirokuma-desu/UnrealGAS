@@ -20,7 +20,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	AbilitySystemComponent->InitAbilityActorInfo(GetOwner(),this);
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 
 }
 
