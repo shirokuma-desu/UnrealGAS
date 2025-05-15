@@ -4,7 +4,9 @@
 #include "Character/MyPlayer.h"
 #include "AbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/MyPlayerController.h"
 #include "Player/MyPlayerState.h"
+#include "UI/HUD/MyHUD.h"
 
 AMyPlayer::AMyPlayer()
 {
@@ -27,6 +29,14 @@ void AMyPlayer::InitAbilityActorInfo()
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+
+	if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(GetController()))
+	{
+		if (AMyHUD* MyHUD = Cast<AMyHUD>(MyPlayerController->GetHUD()))
+		{
+			MyHUD->InitOverlayWidget(MyPlayerController,AuraPlayerState,AbilitySystemComponent,AttributeSet);
+		}
+	}
 }
 
 void AMyPlayer::PossessedBy(AController* NewController)

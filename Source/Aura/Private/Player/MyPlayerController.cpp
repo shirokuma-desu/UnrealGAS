@@ -22,9 +22,11 @@ void AMyPlayerController::BeginPlay()
 		);
 
 	UEnhancedInputLocalPlayerSubsystem* Subsytem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsytem);
 	//init IMC
+	if (Subsytem)
+	{
 	Subsytem->AddMappingContext(PlayerInputMappingContext, 0);
+	}
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
 
