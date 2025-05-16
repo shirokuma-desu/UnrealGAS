@@ -44,17 +44,29 @@ void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<
 		TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
-void AAuraEffectActor::ApplyDurationGameplayEffectToTaeget(AActor* ATarget,
-	TSubclassOf<UGameplayEffect> GameplayEffectClass)
+void AAuraEffectActor::OnBeginOverlap(AActor* TargetActor)
 {
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ATarget);
-	if (TargetASC == nullptr) return;
-	check(GameplayEffectClass);
+	if (InstanceEffectApplicationPolicy == E_ApplyEffectOnBeginOverlap)
+	{
+		ApplyGameplayEffectToTarget(TargetActor, InstanceGameplayEffectClass);
+	}
+	if (DurationEffectApplicationPolicy == E_ApplyEffectOnBeginOverlap)
+	{
+		ApplyGameplayEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	}
+	
+}
 
-	FGameplayEffectContextHandle GEcontextHandle = TargetASC->MakeEffectContext();
-	GEcontextHandle.AddSourceObject(this);
-	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,1.f,GEcontextHandle);
-	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
+{
+	if (InstanceEffectApplicationPolicy == E_ApplyEffectOnEndOverlap)
+	{
+		ApplyGameplayEffectToTarget(TargetActor, InstanceGameplayEffectClass);
+	}
+	if (DurationEffectApplicationPolicy == E_ApplyEffectOnEndOverlap)
+	{
+		ApplyGameplayEffectToTarget(TargetActor, DurationGameplayEffectClass);
+	}
 }
 
 
