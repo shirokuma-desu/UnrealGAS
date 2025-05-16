@@ -22,7 +22,7 @@ void AAuraEffectActor::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<UGameplayEffect> EGameplayEffectClass)
+void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 		//Get ASC of target Actor by using it static class, or you can cast manually like this
 		/*UAbilitySystemInterface* ASCInterface = Cast<UAbilitySystemInterface>(ATarget);
@@ -33,15 +33,28 @@ void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<
 	
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ATarget);
 		if (TargetASC == nullptr) return;
-		check(EGameplayEffectClass);
+		check(GameplayEffectClass);
 		//Create EffectContext from Target ASC
 		FGameplayEffectContextHandle GEContextHandle = TargetASC->MakeEffectContext();
 		//Create SourceObject which mean this target actor is object do that effect.
 		GEContextHandle.AddSourceObject(this);
 		//Create GESpec contain all necessary information 
-		const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(EGameplayEffectClass,1.f,GEContextHandle);
+		const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,1.f,GEContextHandle);
 		//now apply that spec to a target actor
 		TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
+}
+
+void AAuraEffectActor::ApplyDurationGameplayEffectToTaeget(AActor* ATarget,
+	TSubclassOf<UGameplayEffect> GameplayEffectClass)
+{
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ATarget);
+	if (TargetASC == nullptr) return;
+	check(GameplayEffectClass);
+
+	FGameplayEffectContextHandle GEcontextHandle = TargetASC->MakeEffectContext();
+	GEcontextHandle.AddSourceObject(this);
+	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,1.f,GEcontextHandle);
+	TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 }
 
 

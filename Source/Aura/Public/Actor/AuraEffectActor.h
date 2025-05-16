@@ -20,8 +20,12 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
-	void ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<UGameplayEffect> EGameplayEffectClass);
+	void ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<UGameplayEffect> GameplayEffectClass);
+	UFUNCTION(BlueprintCallable)
+	void ApplyDurationGameplayEffectToTaeget(AActor* ATarget, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 	
 	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> InstanceGameplayEffectClass;
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
 };
