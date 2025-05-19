@@ -22,6 +22,7 @@ AMyPlayer::AMyPlayer()
 	
 }
 
+
 void AMyPlayer::InitAbilityActorInfo()
 {
 	AMyPlayerState* AuraPlayerState = GetPlayerState<AMyPlayerState>();

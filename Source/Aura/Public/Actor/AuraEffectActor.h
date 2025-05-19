@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ActiveGameplayEffectHandle.h"
 #include "GameFramework/Actor.h"
 #include "AuraEffectActor.generated.h"
 
@@ -45,28 +46,39 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);
 
+	UFUNCTION(BlueprintCallable)
+	void ApplyAllGameplayEffectToTarget(AActor* ATarget,TArray<TSubclassOf<UGameplayEffect>> GameplayEffects);
+
 	//variable
 	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> InstanceGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TEnumAsByte<EEffectApplicationPolicy> InstanceEffectApplicationPolicy = E_DoNotApplyEffect;
 	
 	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DurationGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TEnumAsByte<EEffectApplicationPolicy> DurationEffectApplicationPolicy = E_DoNotApplyEffect;
 	
 	UPROPERTY(EditAnywhere,Category="Applied Effect",BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> InfiniteGameplayEffectClass;
 
-	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TEnumAsByte<EEffectApplicationPolicy> InfiniteEffectApplicationPolicy = E_DoNotApplyEffect;
 
-	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	TEnumAsByte<EEffectRemovalPolicy> InfiniteEffectRemovalPolicy = E_RemoveEffectOnEndOverlap;
 
-	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly,BlueprintReadOnly)
+	UPROPERTY(EditAnywhere,Category = "Applied Effect", BlueprintReadOnly)
+	TArray<TSubclassOf<UGameplayEffect>> MultipleEffects;
+	
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
 	bool bDestroyOnEffectRemoval = false;
+
+	UPROPERTY()
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveGameplayEffects;
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
+	float ActorLevel = 1;
 };
