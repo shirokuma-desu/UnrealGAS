@@ -25,6 +25,10 @@ void AAuraCharacter::BeginPlay()
 	
 }
 
+void AAuraCharacter::InitAbilityActorInfo()
+{
+}
+
 // Called to bind functionality to input
 void AAuraCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

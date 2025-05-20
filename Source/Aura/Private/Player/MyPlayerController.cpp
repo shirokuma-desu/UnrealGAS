@@ -60,7 +60,7 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 	const FVector ForwardDirection = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotator).GetUnitAxis(EAxis::Y);
 
-	if (APawn* ControllerPawn = GetPawn<APawn>())
+	if (APawn* ControllerPawn = GetPawn())
 	{
 		ControllerPawn->AddMovementInput(ForwardDirection,InputAxisVector2D.Y);
 		ControllerPawn->AddMovementInput(RightDirection,InputAxisVector2D.X);

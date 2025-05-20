@@ -26,7 +26,7 @@ public:
 protected:
 	
 	virtual void BeginPlay() override;
-
+	virtual void InitAbilityActorInfo();
 	//var
 	UPROPERTY(EditAnywhere, Category= "Mesh| Weapon", BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
