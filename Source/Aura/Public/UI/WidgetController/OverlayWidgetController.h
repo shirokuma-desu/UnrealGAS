@@ -9,11 +9,6 @@
 
 class UAuraUserWidget;
 struct FOnAttributeChangeData;
-//Declare delegates
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedDelegate,float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedDelegate,float, NewMaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedDelegate,float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedDelegate,float, NewMaxMana);
 
 USTRUCT(BlueprintType)
 struct FUIWidgetRow : public FTableRowBase
@@ -31,6 +26,11 @@ struct FUIWidgetRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
+//Declare delegates
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangeDelegate,float ,NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate, FUIWidgetRow, Row);
+
+
 /**
  * 
  */
@@ -43,22 +43,23 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	virtual void BindCallbacksToDependencies() override;
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FOnHealthChangedDelegate OnHealthChanged;
+	FOnAttributeChangeDelegate OnHealthChanged;
+	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FOnMaxHealthChangedDelegate OnMaxHealthChanged;
+	FOnAttributeChangeDelegate OnMaxHealthChanged;
+	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FOnManaChangedDelegate OnManaChanged;
+	FOnAttributeChangeDelegate OnManaChanged;
+	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FOnMaxManaChangedDelegate OnMaxManaChanged;
+	FOnAttributeChangeDelegate OnMaxManaChanged;
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
+	FMessageWidgetRowDelegate MessageWidgetRowHandler;
 
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
 	TObjectPtr<UDataTable> MessageDataTable;
-	
-	void HealthChanged(const FOnAttributeChangeData& Data) const;
-	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void ManaChanged(const FOnAttributeChangeData& Data) const;
-	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
