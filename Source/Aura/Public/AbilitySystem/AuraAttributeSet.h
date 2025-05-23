@@ -64,7 +64,7 @@ public:
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_MaxMana, Category = "Mana Attributes")
 	FGameplayAttributeData MaxMana;
 
-	//GPA Accessors
+	//Gameplay AttributeSet Accessors
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Health)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxHealth)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Mana)

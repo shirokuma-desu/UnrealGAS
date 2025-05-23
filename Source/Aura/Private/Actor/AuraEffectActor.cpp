@@ -35,21 +35,26 @@ void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<
 		if (TargetASC == nullptr) return;
 		check(GameplayEffectClass);
 		//Create EffectContext from Target ASC
+		//this context handle store information about the effect application, such as whom caused the effect
+		//where it will happen, and other metadata.
 		FGameplayEffectContextHandle GEContextHandle = TargetASC->MakeEffectContext();
-		//Create SourceObject which mean this target actor is object do that effect.
+		//Add SourceObj to ensure that effect know which actor or obj initiated it. Usefull for tracking, callback, or
+		//who cause this effect. It just a container for contextual information.
 		GEContextHandle.AddSourceObject(this);
-		//Create GESpec contain all necessary information 
+		//Create GameplayEffectSpecHandle from the GameplayEffectClass. This is fully-defined instance of gameplay effect that is ready to be applied.
 		const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(GameplayEffectClass,ActorLevel,GEContextHandle);
-		//now apply that spec to a target actor
+		//You have created fully-defined instance of GEEffect, to apply it to the target ASC, you need to call ApplyGameplayEffectSpecToSelf
+		//by using ASC
 		const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
-		const bool bInfinite = EffectSpecHandle.Data.Get()->Def->DurationPolicy == EGameplayEffectDurationType::Infinite;
+	const bool bInfinite = EffectSpecHandle.Data.Get()->Def->DurationPolicy == EGameplayEffectDurationType::Infinite;
 		if (bInfinite && InfiniteEffectRemovalPolicy == E_RemoveEffectOnEndOverlap)
 		{
 			ActiveGameplayEffects.Add(ActiveGameplayEffectHandle,TargetASC);
 		}
 		
 }
+
 
 void AAuraEffectActor::OnBeginOverlap(AActor* TargetActor)
 {
