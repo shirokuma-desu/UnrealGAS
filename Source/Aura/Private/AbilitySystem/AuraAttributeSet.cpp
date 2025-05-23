@@ -10,10 +10,10 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitHealth(100);
-	InitMaxHealth(1000);
-	InitMana(100);
-	InitMaxMana(1000);
+	InitHealth(40);
+	InitMaxHealth(100);
+	InitMana(40);
+	InitMaxMana(100);
 }
 
 //This function is essential for multiplayer game, to specify which properties of a class should be replicated over the network.
@@ -44,7 +44,7 @@ void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, 
 //FGameplayEffectModCallbackData is a structure provided by Unreal’s GAS that contains all the information
 //about a gameplay effect modification,
 //including the effect specification, the source and target actors, and their ability system component
-//this is the setup GEModcallbackData for the system 
+//this is the setup GEMod callbackData for the system 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData Data, FEffectProperties& Props) const
 {
 	Props.EffectContextHandle = Data.EffectSpec.GetContext();
@@ -81,7 +81,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	FEffectProperties Props;
 	//Source = Causer of the effect, Target = Target of the effect( owner of this AS)
 	SetEffectProperties(Data, Props);
-	
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMath::Clamp(GetHealth(),0.f,GetMaxHealth()));
+	}
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		SetMana(FMath::Clamp(GetMana(),0.f,GetMaxMana()));
+	}
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const

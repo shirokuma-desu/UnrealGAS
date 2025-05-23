@@ -7,7 +7,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/MyPlayerController.h"
 #include "Player/MyPlayerState.h"
-#include "UI/HUD/MyHUD.h"
+#include "Aura/Public/UI/HUD/MyHUD.h"
 
 AMyPlayer::AMyPlayer()
 {

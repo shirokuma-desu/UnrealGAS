@@ -11,6 +11,7 @@ class UAuraUserWidget;
 struct FOnAttributeChangeData;
 
 USTRUCT(BlueprintType)
+//struct for datatable
 struct FUIWidgetRow : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -28,6 +29,7 @@ struct FUIWidgetRow : public FTableRowBase
 };
 //Declare delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangeDelegate,float ,NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributesChangeDelegate,float,NewValue, float, OldValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate, FUIWidgetRow, Row);
 
 
@@ -57,6 +59,11 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
 	FMessageWidgetRowDelegate MessageWidgetRowHandler;
 
+	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
+	FOnAttributesChangeDelegate Test1;
+	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
+	FOnAttributesChangeDelegate Test2;
+	
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
 	TObjectPtr<UDataTable> MessageDataTable;
