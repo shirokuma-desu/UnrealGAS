@@ -53,8 +53,19 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+
+	//Primary Attribute declare
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Strength,Category="Primary Attribute");
+	FGameplayAttributeData Strength;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Intelligence,Category="Primary Attribute");
+	FGameplayAttributeData Intelligence;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Resilience,Category="Primary Attribute");
+	FGameplayAttributeData Resilience;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Vigor,Category="Primary Attribute");
+	FGameplayAttributeData Vigor;
+
 	
-	//Struct Attribute
+	//Vital Attribute declare
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Health,Category = "Vital Attributes")
 	FGameplayAttributeData Health;
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_MaxHealth,Category = "Vital Attributes")
@@ -69,6 +80,7 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxHealth)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Mana)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxMana)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Strength)
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
@@ -78,6 +90,15 @@ public:
 	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& OldStrength) const;
+	UFUNCTION()
+	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const;
+	UFUNCTION()
+	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
+	UFUNCTION()
+	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
+	
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData Data, FEffectProperties& Props) const;
 	
