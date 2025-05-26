@@ -64,23 +64,55 @@ public:
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Vigor,Category="Primary Attribute");
 	FGameplayAttributeData Vigor;
 
+	//Second Attribute
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Armor,Category="Second Attribute");
+	FGameplayAttributeData Armor;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_ArmorPen,Category="Second Attribute");
+	FGameplayAttributeData ArmorPen;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_BlockChance,Category="Second Attribute");
+	FGameplayAttributeData BlockChance;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_CritHitChance,Category="Second Attribute");
+	FGameplayAttributeData CritHitChance;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_CritDmg,Category="Second Attribute");
+	FGameplayAttributeData CritDmg;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_CritResist,Category="Second Attribute");
+	FGameplayAttributeData CritResist;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_HealthRegen,Category="Second Attribute");
+	FGameplayAttributeData HealthRegen;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_ManaRegen,Category="Second Attribute");
+	FGameplayAttributeData ManaRegen;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_MaxHealth,Category="Second Attribute");
+	FGameplayAttributeData MaxHealth;
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_MaxMana,Category="Second Attribute");
+	FGameplayAttributeData MaxMana;
+	
 	
 	//Vital Attribute declare
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Health,Category = "Vital Attributes")
 	FGameplayAttributeData Health;
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_MaxHealth,Category = "Vital Attributes")
-	FGameplayAttributeData MaxHealth;
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Mana, Category = "Mana Attributes")
 	FGameplayAttributeData Mana;
-	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_MaxMana, Category = "Mana Attributes")
-	FGameplayAttributeData MaxMana;
 
 	//Gameplay AttributeSet Accessors
+	
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Health)
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxHealth)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Mana)
-	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxMana)
+	//primary attribute access
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Strength)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Intelligence)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Resilience)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Vigor)
+	//second attribute access
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxHealth)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxMana)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Armor)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ArmorPen)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,CritDmg)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,CritHitChance)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,CritResist)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,HealthRegen)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ManaRegen)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,BlockChance)
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
@@ -98,7 +130,23 @@ public:
 	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
 	UFUNCTION()
 	void OnRep_Vigor(const FGameplayAttributeData& OldVigor) const;
-	
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+	UFUNCTION()
+	void OnRep_ArmorPen(const FGameplayAttributeData& OldArmorPen) const;
+	UFUNCTION()
+	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
+	UFUNCTION()
+	void OnRep_CritHitChance(const FGameplayAttributeData& OldCritHitChance) const;
+	UFUNCTION()
+	void OnRep_CritDmg(const FGameplayAttributeData& OldCritDmg) const;
+	UFUNCTION()
+	void OnRep_CritResist(const FGameplayAttributeData& OldCritResist) const;
+	UFUNCTION()
+	void OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen) const;
+	UFUNCTION()
+	void OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen) const;
+
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData Data, FEffectProperties& Props) const;
 	
