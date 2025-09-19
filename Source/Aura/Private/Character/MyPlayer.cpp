@@ -40,7 +40,7 @@ void AMyPlayer::InitAbilityActorInfo()
 			MyHUD->InitOverlayWidget(MyPlayerController,AuraPlayerState,AbilitySystemComponent,AttributeSet);
 		}
 	}
-	InitializePrimaryAttributes();
+	InitializeDefaultAttributes();
 }
 
 void AMyPlayer::PossessedBy(AController* NewController)

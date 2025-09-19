@@ -10,10 +10,8 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitHealth(40);
-	InitMaxHealth(100);
-	InitMana(40);
-	InitMaxMana(100);
+	InitHealth(10);
+	InitMana(10);
 }
 
 //This function is essential for multiplayer game, to specify which properties of a class should be replicated over the network.
@@ -47,14 +45,14 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	if(Attribute == GetHealthAttribute())
+	/*if(Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
 	}
 	if (Attribute == GetMaxManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
-	}
+	}*/
 }
 
 //FGameplayEffectModCallbackData is a structure provided by Unreal’s GAS that contains all the information
