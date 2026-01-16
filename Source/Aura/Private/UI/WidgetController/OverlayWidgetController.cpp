@@ -38,7 +38,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
-			OnMaxHealthChanged.Broadcast(Data.NewValue);
+			OnMaxManaChanged.Broadcast(Data.NewValue);
 		}
 		);
 		
@@ -48,7 +48,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		/*
 		 *	So to check which tag in array tag is the tag we need
 		 *  using FGameplayTag::RequestGameplayTag to get the tag we want
-		 *  then using .MatcheTag(param Tag) to check
+		 *  then using .MatchesTag(param Tag) to check
 		 */
 		for (const auto& Tag : AssetTags)
 		{
