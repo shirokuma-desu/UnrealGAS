@@ -38,3 +38,9 @@ void AEnemy::UnHighLightActor()
 {
 	OnNotHoverEnemyHappened.Broadcast();
 }
+
+int32 AEnemy::GetPlayerLevel()
+{
+	return Level;
+}
+

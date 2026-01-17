@@ -30,10 +30,17 @@ public:
 	virtual void HightLightActor() override;
 	virtual void UnHighLightActor() override;
 	
+	//* Combat Interface
+	virtual int32 GetPlayerLevel() override;
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 	bool bIsHighLight = false;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character Class Default")
+	int32 Level;
+	
+private:
 	
 };

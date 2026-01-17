@@ -56,3 +56,11 @@ void AMyPlayer::OnRep_PlayerState()
 	//init ability actor information for the client
 	InitAbilityActorInfo();
 }
+
+int32 AMyPlayer::GetPlayerLevel()
+{
+	const AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	return MyPlayerState->GetPlayerLevel();
+}
+
