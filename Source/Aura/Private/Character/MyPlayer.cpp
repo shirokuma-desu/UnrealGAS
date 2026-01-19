@@ -59,15 +59,9 @@ void AMyPlayer::OnRep_PlayerState()
 
 int32 AMyPlayer::GetPlayerLevel()
 {
-<<<<<<< HEAD
-	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
-	check(MyPlayerState);
-	return MyPlayerState->GetPlayerLevel();
-}
-=======
+
 	const AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
 	return MyPlayerState->GetPlayerLevel();
 }
 
->>>>>>> origin/main

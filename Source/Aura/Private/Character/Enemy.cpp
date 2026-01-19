@@ -39,11 +39,8 @@ void AEnemy::UnHighLightActor()
 	OnNotHoverEnemyHappened.Broadcast();
 }
 
-<<<<<<< HEAD
-=======
 int32 AEnemy::GetPlayerLevel()
 {
 	return Level;
 }
 
->>>>>>> origin/main

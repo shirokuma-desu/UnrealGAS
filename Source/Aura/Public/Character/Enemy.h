@@ -31,10 +31,7 @@ public:
 	virtual void UnHighLightActor() override;
 	
 	//* Combat Interface
-<<<<<<< HEAD
-=======
 	virtual int32 GetPlayerLevel() override;
->>>>>>> origin/main
 	
 protected:
 	virtual void BeginPlay() override;
