@@ -10,6 +10,7 @@
 
 class UAbilitySystemComponent;
 class UAttributeSet;
+
 UCLASS(Abstract)
 class AURA_API AAuraCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -41,9 +42,7 @@ protected:
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Attributes")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryPrimaryAttributes;
 
-	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float level) const;
-	void InitializeDefaultAttributes() const;
-private:
 	
+	void InitializeDefaultAttributes() const;
 };
