@@ -10,8 +10,7 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	InitHealth(10);
-	InitMana(10);
+	
 }
 
 //This function is essential for multiplayer game, to specify which properties of a class should be replicated over the network.

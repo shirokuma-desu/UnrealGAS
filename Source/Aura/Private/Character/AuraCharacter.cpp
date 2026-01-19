@@ -46,6 +46,7 @@ void AAuraCharacter::InitializeDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes,1);
 	ApplyEffectToSelf(DefaultSecondaryPrimaryAttributes,1);
+	ApplyEffectToSelf(DefaultVitalAttributes,1.0f);
 }
 
 // Called to bind functionality to input
