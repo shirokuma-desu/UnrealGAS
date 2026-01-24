@@ -2,56 +2,67 @@
 
 
 #include "Character/AuraCharacter.h"
-
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Player/MyPlayerController.h"
+#include "Player/MyPlayerState.h"
+#include "Aura/Public/UI/HUD/MyHUD.h"
 
-// Sets default values
 AAuraCharacter::AAuraCharacter()
 {
-	PrimaryActorTick.bCanEverTick = false;
-	WeaponMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
-	WeaponMeshComponent->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
-	WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	//set yaw rotation speed
+	GetCharacterMovement()->RotationRate = FRotator(0, 400, 0);
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 
-}
-
-UAbilitySystemComponent* AAuraCharacter::GetAbilitySystemComponent() const
-{
-	return AbilitySystemComponent;
-}
-
-// Called when the game starts or when spawned
-void AAuraCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 	
 }
 
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
+	AMyPlayerState* AuraPlayerState = GetPlayerState<AMyPlayerState>();
+	check(AuraPlayerState);
+	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
+	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
+	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	AttributeSet = AuraPlayerState->GetAttributeSet();
+
+	if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(GetController()))
+	{
+		if (AMyHUD* MyHUD = Cast<AMyHUD>(MyPlayerController->GetHUD()))
+		{
+			MyHUD->InitOverlayWidget(MyPlayerController,AuraPlayerState,AbilitySystemComponent,AttributeSet);
+		}
+	}
+	InitializeDefaultAttributes();
 }
 
-
-void AAuraCharacter::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float level) const
+void AAuraCharacter::PossessedBy(AController* NewController)
 {
-	check(IsValid(GetAbilitySystemComponent()));
-	check(GameplayEffectClass);
-	FGameplayEffectContextHandle GameplayEffectContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-	GameplayEffectContextHandle.AddSourceObject(this);
-	const FGameplayEffectSpecHandle GameplayEffectSpecHandle = GetAbilitySystemComponent()->MakeOutgoingSpec(GameplayEffectClass,level,GameplayEffectContextHandle);
-	GetAbilitySystemComponent()->ApplyGameplayEffectSpecToTarget(*GameplayEffectSpecHandle.Data.Get(),GetAbilitySystemComponent());
+	Super::PossessedBy(NewController);
+	//init ability actor information for the server
+	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
-void AAuraCharacter::InitializeDefaultAttributes() const
+void AAuraCharacter::OnRep_PlayerState()
 {
-	ApplyEffectToSelf(DefaultPrimaryAttributes,1);
-	ApplyEffectToSelf(DefaultSecondaryPrimaryAttributes,1);
-	ApplyEffectToSelf(DefaultVitalAttributes,1.0f);
+	Super::OnRep_PlayerState();
+	//init ability actor information for the client
+	InitAbilityActorInfo();
 }
 
-// Called to bind functionality to input
-void AAuraCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+int32 AAuraCharacter::GetPlayerLevel()
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	const AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	return MyPlayerState->GetPlayerLevel();
 }
 

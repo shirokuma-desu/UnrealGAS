@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/AuraCharacter.h"
+#include "Character/AuraCharacterBase.h"
 #include "Interfaces/IInteraction.h"
 #include "Enemy.generated.h"
 
@@ -15,7 +15,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNotHoverEnemy);
  * 
  */
 UCLASS()
-class AURA_API AEnemy : public AAuraCharacter, public IIInteraction
+class AURA_API AEnemy : public AAuraCharacterBase, public IIInteraction
 {
 	GENERATED_BODY()
 public:
