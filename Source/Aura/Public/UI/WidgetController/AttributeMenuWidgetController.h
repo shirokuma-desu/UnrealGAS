@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "Data/AbilitySystem/DA_AttributeInfo.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
@@ -24,8 +25,11 @@ public:
 	
 	UPROPERTY(BlueprintAssignable, Category= "GAS|Attributes")
 	FAttributeInfoSignature AttributeInfoDelegate;
+	
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	TObjectPtr<UDA_AttributeInfo> AttributeInformation;
+private:
+	void BoardCastAttributeInfo(const FGameplayTag& AttributeTag,const FGameplayAttribute& Attribute) const;
 	
 };

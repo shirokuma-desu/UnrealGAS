@@ -43,6 +43,12 @@ struct FEffectProperties
 
 };
 
+//declare a template
+//type def is specific to FGameplayAttribute() signature, but TStaticFunPtr is generic to any signature chosen
+//typedef TBaseStaticDelegateInstance<FGameplayAttribute(),FDefaultDelegateUserPolicy> ::FFuncPtr FAttributeFunc;
+template<class T>
+using TStaticFunc = TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy> ::FFuncPtr;
+
 UCLASS()
 class AURA_API UAuraAttributeSet : public UAttributeSet
 {
@@ -53,7 +59,9 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
-
+	
+	TMap<FGameplayTag,TStaticFunc<FGameplayAttribute()>> TagToAttribute;
+	
 	//Primary Attribute declare
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Strength,Category="Primary Attribute");
 	FGameplayAttributeData Strength;
