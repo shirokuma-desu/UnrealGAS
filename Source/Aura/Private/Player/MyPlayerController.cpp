@@ -2,8 +2,8 @@
 
 
 #include "Player/MyPlayerController.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Input/AuraInputComponent.h"
 #include "Interfaces/IInteraction.h"
 
 AMyPlayerController::AMyPlayerController()
@@ -41,8 +41,10 @@ void AMyPlayerController::BeginPlay()
 void AMyPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AMyPlayerController::Move);
+	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
+	AuraInputComponent->BindAction(MoveAction,ETriggerEvent::Triggered,this,&AMyPlayerController::Move);
+	AuraInputComponent->BindAbilityAction(InputConfig,this,&ThisClass::AbilityInputPressed,
+		&ThisClass::AbilityInputReleased, &ThisClass::AbilityInputHeld);
 }
 
 void AMyPlayerController::PlayerTick(float DeltaTime)
@@ -101,4 +103,19 @@ void AMyPlayerController::CursorTrace()
 		// E. Cả hai đều là cùng một actor -> Không làm gì
 	}
 
+}
+
+void AMyPlayerController::AbilityInputPressed(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Blue, *InputTag.ToString());
+}
+
+void AMyPlayerController::AbilityInputHeld(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Green, *InputTag.ToString());
 }
