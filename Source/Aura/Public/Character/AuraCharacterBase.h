@@ -56,6 +56,6 @@ protected:
 private:
 	
 	UPROPERTY(EditAnywhere,Category="Abilities")
-	TArray<TSubclassOf<UGameplayAbility>> StartupAbilites;
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 };

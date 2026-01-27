@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "MyPlayerController.generated.h"
 
+class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
 class IIInteraction;
 struct FInputActionValue;
@@ -49,4 +50,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input ")
 	TObjectPtr<UAuraInputConfig> InputConfig;
 	
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+	
+	UAuraAbilitySystemComponent* GetASC();
 };

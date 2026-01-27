@@ -54,9 +54,7 @@ void AAuraCharacterBase::AddCharacterAbilities()
 {
 	UAuraAbilitySystemComponent* AuraASC =  CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority()) return;
-	
-	AuraASC->AddCharacterAbility(StartupAbilites);
-	
+	AuraASC->AddCharacterAbility(StartupAbilities);
 }
 
 // Called to bind functionality to input
