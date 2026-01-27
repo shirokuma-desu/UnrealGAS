@@ -4,8 +4,10 @@
 #include "Player/MyPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTag.h"
 #include "EnhancedInputSubsystems.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interfaces/IInteraction.h"
 #include "Player/MyPlayerState.h"
@@ -13,6 +15,7 @@
 AMyPlayerController::AMyPlayerController()
 {
 	bReplicates = true;
+	SplineComponent = CreateDefaultSubobject<USplineComponent>("SplineComponent");
 }
 
 void AMyPlayerController::BeginPlay()
@@ -111,7 +114,12 @@ void AMyPlayerController::CursorTrace()
 
 void AMyPlayerController::AbilityInputPressed(FGameplayTag InputTag)
 {
-	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	if (InputTag.MatchesTagExact(FAuraGameplayTag::Get().InputTag_LMB))
+	{
+		IsTargeting = ThisActor ? true : false;
+		IsAutoRunning = false;
+	}
+	
 }
 
 void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
@@ -123,8 +131,35 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 
 void AMyPlayerController::AbilityInputHeld(FGameplayTag InputTag)
 {
-	if (GetASC() == nullptr) return;
-	GetASC()->AbilityInputTagHeld(InputTag);
+	if (!InputTag.MatchesTagExact(FAuraGameplayTag::Get().InputTag_LMB))
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+	if (IsTargeting)
+	{
+		if (GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		FollowTime += GetWorld()->GetDeltaSeconds();
+		FHitResult HitResult;
+		if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,HitResult))
+		{
+			CachedDestination = HitResult.ImpactPoint;
+		}
+		if (APawn* ControllerPawn = GetPawn())
+		{
+			const FVector WorldDirection = (CachedDestination - ControllerPawn->GetActorLocation()).GetSafeNormal();
+			ControllerPawn->AddMovementInput(WorldDirection);
+		}
+	}
 }
 
 UAuraAbilitySystemComponent* AMyPlayerController::GetASC()

@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "MyPlayerController.generated.h"
 
+class USplineComponent;
 class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
 class IIInteraction;
@@ -46,6 +47,7 @@ private:
 	void AbilityInputPressed(FGameplayTag InputTag);
 	void AbilityInputReleased(FGameplayTag InputTag);
 	void AbilityInputHeld(FGameplayTag InputTag);
+	UAuraAbilitySystemComponent* GetASC();
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input ")
 	TObjectPtr<UAuraInputConfig> InputConfig;
@@ -53,5 +55,15 @@ private:
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 	
-	UAuraAbilitySystemComponent* GetASC();
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	float ShortPressThreshold = 0.5f;
+	bool IsAutoRunning = false;
+	bool IsTargeting = false;
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> SplineComponent;
+	
+	
 };
