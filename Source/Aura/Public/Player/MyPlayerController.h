@@ -40,6 +40,7 @@ private:
 
 	void Move(const FInputActionValue& InputActionValue);
 	void CursorTrace();
+	void AutoRun();
 
 	TScriptInterface<IIInteraction> LastActor;
 	TScriptInterface<IIInteraction> ThisActor;
@@ -64,6 +65,5 @@ private:
 	float AutoRunAcceptanceRadius = 50.f;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> SplineComponent;
-	
 	
 };

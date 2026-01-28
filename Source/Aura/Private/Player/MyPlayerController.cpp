@@ -43,6 +43,8 @@ void AMyPlayerController::BeginPlay()
 	InputModeData.SetHideCursorDuringCapture(false);
 	SetInputMode(InputModeData);
 	
+
+	
 }
 
 void AMyPlayerController::SetupInputComponent()
@@ -58,6 +60,8 @@ void AMyPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
+	AutoRun();
+	
 }
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
@@ -112,6 +116,23 @@ void AMyPlayerController::CursorTrace()
 
 }
 
+void AMyPlayerController::AutoRun()
+{
+	if (!IsAutoRunning) return;
+	
+		if (APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = SplineComponent->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(),ESplineCoordinateSpace::World);
+		const FVector Direction = SplineComponent->FindDirectionClosestToWorldLocation(LocationOnSpline,ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if (DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			IsAutoRunning = false;
+		}
+	}
+}
+
 void AMyPlayerController::AbilityInputPressed(FGameplayTag InputTag)
 {
 	if (InputTag.MatchesTagExact(FAuraGameplayTag::Get().InputTag_LMB))
@@ -154,6 +175,7 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 					SplineComponent->AddSplinePoint(PointLocation,ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(),PointLocation,8.f,8,FColor::Green,false,5.0f);
 				}
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				IsAutoRunning = true;
 			}
 		}
