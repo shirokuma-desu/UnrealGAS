@@ -82,36 +82,16 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AMyPlayerController::CursorTrace()
 {
-	FHitResult HitResult;
-	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,HitResult);
-	if (!HitResult.bBlockingHit) return;
+	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,CursorHitResult);
+	if (!CursorHitResult.bBlockingHit) return;
 
 	LastActor = ThisActor;
-	ThisActor = HitResult.GetActor();
+	ThisActor = CursorHitResult.GetActor();
 
-	if (!LastActor && !ThisActor)
+	if (LastActor != ThisActor)
 	{
-		// A. Cả hai đều null -> Không làm gì
-	}
-	else if (!LastActor && ThisActor)
-	{
-		// B. Chỉ ThisActor có giá trị -> Highlight ThisActor
-		ThisActor->HightLightActor();
-	}
-	else if (LastActor && !ThisActor)
-	{
-		// C. Chỉ LastActor có giá trị -> UnHighlight LastActor
-		LastActor->UnHighLightActor();
-	}
-	else if (LastActor != ThisActor)
-	{
-		// D. Cả hai đều có giá trị, nhưng khác nhau
-		LastActor->UnHighLightActor();
-		ThisActor->HightLightActor();
-	}
-	else
-	{
-		// E. Cả hai đều là cùng một actor -> Không làm gì
+		if (LastActor) LastActor->UnHighLightActor();
+		if (ThisActor) ThisActor->HightLightActor();
 	}
 
 }
@@ -164,7 +144,7 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 	}
 	else
 	{
-		APawn* ControlledPawn = GetPawn();
+		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
 		{
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this,ControlledPawn->GetActorLocation(),CachedDestination))
@@ -173,7 +153,6 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 				for (const auto& PointLocation : NavPath->PathPoints)
 				{
 					SplineComponent->AddSplinePoint(PointLocation,ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(),PointLocation,8.f,8,FColor::Green,false,5.0f);
 				}
 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				IsAutoRunning = true;
@@ -205,10 +184,10 @@ void AMyPlayerController::AbilityInputHeld(FGameplayTag InputTag)
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-		FHitResult HitResult;
-		if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,HitResult))
+		
+		if (CursorHitResult.bBlockingHit)
 		{
-			CachedDestination = HitResult.ImpactPoint;
+			CachedDestination = CursorHitResult.ImpactPoint;
 		}
 		if (APawn* ControllerPawn = GetPawn())
 		{
