@@ -13,6 +13,8 @@ AAuraProjectile::AAuraProjectile()
 	SphereCollision = CreateDefaultSubobject<USphereComponent>("SphereCollision");
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
 	
+	bReplicates = true;
+	
 	SetRootComponent(SphereCollision);
 	SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SphereCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
