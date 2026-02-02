@@ -53,6 +53,7 @@ void UTargetDataUnderMouse::SendMouseCursorData()
 		GetActivationPredictionKey(),
 		TargetDataHandle,FGameplayTag(),AbilitySystemComponent->ScopedPredictionKey);
 	
+	//check if ability task still working
 	if (ShouldBroadcastAbilityTaskDelegates())
 	{
 		ValidData.Broadcast(TargetDataHandle);

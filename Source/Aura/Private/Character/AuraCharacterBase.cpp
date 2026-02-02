@@ -5,6 +5,7 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AAuraCharacterBase::AAuraCharacterBase()
@@ -13,6 +14,9 @@ AAuraCharacterBase::AAuraCharacterBase()
 	WeaponMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	WeaponMeshComponent->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
 	WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 
 }
 

@@ -19,7 +19,7 @@ protected:
 		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	
 	UFUNCTION(BlueprintCallable,Category="Aura|ProjectileSpell")
-	void SpawnProjectile();
+	void SpawnProjectile(const FVector& TargetVector);
 	
 private:
 	UPROPERTY(EditDefaultsOnly)

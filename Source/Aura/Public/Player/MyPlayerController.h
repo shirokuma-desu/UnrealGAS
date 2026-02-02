@@ -37,10 +37,16 @@ private:
 	//input action
 	UPROPERTY(EditAnywhere, Category = "Input | Input Action")
 	TObjectPtr<UInputAction> MoveAction;
-
+	
+	UPROPERTY(EditAnywhere, Category = "Input | Input Action")
+	TObjectPtr<UInputAction> ShiftAction;
+	
+	
 	void Move(const FInputActionValue& InputActionValue);
 	void CursorTrace();
 	void AutoRun();
+	void OnShiftPressed(){ IsShiftDown = true; }
+	void OnShiftReleased(){ IsShiftDown = false; }
 
 	TScriptInterface<IIInteraction> LastActor;
 	TScriptInterface<IIInteraction> ThisActor;
@@ -62,6 +68,7 @@ private:
 	float ShortPressThreshold = 0.5f;
 	bool IsAutoRunning = false;
 	bool IsTargeting = false;
+	bool IsShiftDown = false;
 	UPROPERTY(EditDefaultsOnly)
 	float AutoRunAcceptanceRadius = 50.f;
 	UPROPERTY(VisibleAnywhere)

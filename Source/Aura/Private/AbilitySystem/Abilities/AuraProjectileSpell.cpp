@@ -1,8 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "AuraProjectileSpell.h"
-
+#include "AbilitySystem/Abilities/AuraProjectileSpell.h"
 #include "Actor/AuraProjectile.h"
 #include "Interfaces/CombatInterface.h"
 
@@ -16,7 +15,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	
 }
 
-void UAuraProjectileSpell::SpawnProjectile()
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 {
 	const bool IsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!IsServer) return;
@@ -25,8 +24,11 @@ void UAuraProjectileSpell::SpawnProjectile()
 	
 	if (!CombatInterface) return;
 	auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation();
+	auto Rotation = (TargetVector - CombatSocketLocation).Rotation();
+	Rotation.Pitch = 0.f;
+	
 	FTransform SpawnTransform;
-	//To do: set projectile rotation
+	SpawnTransform.SetRotation(Rotation.Quaternion());
 	SpawnTransform.SetLocation(CombatSocketLocation);
 	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,SpawnTransform, GetOwningActorFromActorInfo(),
 		Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
