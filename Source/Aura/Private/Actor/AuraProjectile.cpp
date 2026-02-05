@@ -3,6 +3,7 @@
 
 #include "Actor/AuraProjectile.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Aura/Aura.h"
 #include "Components/AudioComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
@@ -23,6 +24,7 @@ AAuraProjectile::AAuraProjectile()
 	SphereCollision->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Overlap);
 	SphereCollision->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Overlap);
 	SphereCollision->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	SphereCollision->SetCollisionObjectType(ECC_Projectile);
 	
 	ProjectileMovementComponent->InitialSpeed = 550.f;
 	ProjectileMovementComponent->MaxSpeed = 550.f;
