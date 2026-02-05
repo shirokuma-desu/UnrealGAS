@@ -2,6 +2,9 @@
 
 
 #include "AbilitySystem/Abilities/AuraProjectileSpell.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
 #include "Interfaces/CombatInterface.h"
 
@@ -32,7 +35,10 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 	SpawnTransform.SetLocation(CombatSocketLocation);
 	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,SpawnTransform, GetOwningActorFromActorInfo(),
 		Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-	//To do: Give project tile a gameplay effect spec for causing damage.
+	
+	const auto SourceAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+	const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceAsc->MakeEffectContext());
+	Projectile->GE_Damage_SpecHandle = SpecHandle;
 	
 	Projectile->FinishSpawning(SpawnTransform);
 }

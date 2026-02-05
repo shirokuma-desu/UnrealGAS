@@ -2,6 +2,9 @@
 
 
 #include "Actor/AuraProjectile.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Aura/Aura.h"
 #include "Components/AudioComponent.h"
@@ -35,7 +38,7 @@ void AAuraProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	SphereCollision->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::OnSphereOverlap);
-	HossingSFXComponent = UGameplayStatics::SpawnSoundAttached(HossingSFX,GetRootComponent());
+	HissSFXComponent = UGameplayStatics::SpawnSoundAttached(HissSFX,GetRootComponent());
 	SetLifeSpan(LifeSpanTime);
 }
 
@@ -45,7 +48,7 @@ void AAuraProjectile::Destroyed()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
-		HossingSFXComponent->Stop();
+		HissSFXComponent->Stop();
 	}
 	Super::Destroyed();
 }
@@ -55,9 +58,14 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 {
 	UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
-	HossingSFXComponent->Stop();
+	HissSFXComponent->Stop();
 	if (HasAuthority())
 	{
+		if(auto TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*GE_Damage_SpecHandle.Data.Get());
+		}
+		
 		Destroy();
 	}
 	else

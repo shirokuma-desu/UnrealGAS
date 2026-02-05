@@ -15,8 +15,10 @@ AAuraCharacterBase::AAuraCharacterBase()
 	WeaponMeshComponent->SetupAttachment(GetMesh(),FName("WeaponHandSocket"));
 	WeaponMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera,ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(false);
 
 }
 

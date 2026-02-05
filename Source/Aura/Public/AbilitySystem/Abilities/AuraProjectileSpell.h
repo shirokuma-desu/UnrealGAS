@@ -21,8 +21,9 @@ protected:
 	UFUNCTION(BlueprintCallable,Category="Aura|ProjectileSpell")
 	void SpawnProjectile(const FVector& TargetVector);
 	
-private:
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class AAuraProjectile> ProjectileClass;
 	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AuraEffectActor.h"
+#include "GameplayEffectTypes.h"
 #include "NiagaraSystem.h"
 #include "AuraProjectile.generated.h"
 
@@ -20,6 +21,10 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovementComponent;
+	
+	UPROPERTY(BlueprintReadWrite, meta=(ExposeOnSpawn = true), Category = "Aura|Projectile")
+	FGameplayEffectSpecHandle GE_Damage_SpecHandle;
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
@@ -39,10 +44,10 @@ private:
 	TObjectPtr<USoundBase> ImpactSFX;
 	
 	UPROPERTY(EditAnywhere)
-	TObjectPtr<USoundBase> HossingSFX;
+	TObjectPtr<USoundBase> HissSFX;
 	
 	UPROPERTY()
-	TObjectPtr<UAudioComponent> HossingSFXComponent;
+	TObjectPtr<UAudioComponent> HissSFXComponent;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float LifeSpanTime = 15.f;
