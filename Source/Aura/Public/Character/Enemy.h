@@ -5,8 +5,10 @@
 #include "CoreMinimal.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interfaces/IInteraction.h"
+#include "UI/WidgetController/OverlayWidgetController.h"
 #include "Enemy.generated.h"
 
+class UWidgetComponent;
 //Delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHoverEnemy);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnNotHoverEnemy);
@@ -21,6 +23,12 @@ class AURA_API AEnemy : public AAuraCharacterBase, public IIInteraction
 public:
 	
 	AEnemy();
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangeDelegate OnHealthChange;
+	UPROPERTY(BlueprintAssignable)
+	FOnAttributeChangeDelegate OnMaxHealthChange;
+	
 	
 	UPROPERTY(BlueprintAssignable, Category = "Events|Highlight")
 	FOnHoverEnemy OnHoverHappened;
@@ -40,7 +48,8 @@ protected:
 	bool bIsHighLight = false;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character Class Default")
 	int32 Level;
-	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Character Class Default")
+	TObjectPtr<UWidgetComponent> HealthBar;
 private:
 	
 };

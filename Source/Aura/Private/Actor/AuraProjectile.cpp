@@ -48,7 +48,10 @@ void AAuraProjectile::Destroyed()
 	{
 		UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
+		if (HissSFXComponent != nullptr)
+		{
 		HissSFXComponent->Stop();
+		}
 	}
 	Super::Destroyed();
 }

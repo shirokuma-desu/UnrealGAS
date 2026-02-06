@@ -61,10 +61,7 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
 	FMessageWidgetRowDelegate MessageWidgetRowHandler;
 
-	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FOnAttributesChangeDelegate Test1;
-	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FOnAttributesChangeDelegate Test2;
+
 	
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
