@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Data/AbilitySystem/DA_AttributeInfo.h"
+#include "AbilitySystem/Data/DA_AttributeInfo.h"
 
 FAuraAttributeInfo UDA_AttributeInfo::FindAttributeInfoForTag(const FGameplayTag& AttributeTag,
 	bool bLogNotFround) const

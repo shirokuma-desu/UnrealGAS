@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
-#include "Data/AbilitySystem/DA_AttributeInfo.h"
+#include "AbilitySystem/Data/DA_AttributeInfo.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "AttributeMenuWidgetController.generated.h"
 
