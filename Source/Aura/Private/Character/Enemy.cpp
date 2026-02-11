@@ -3,6 +3,7 @@
 
 #include "Character/Enemy.h"
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemBPLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
@@ -58,8 +59,15 @@ void AEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	
+	
 	InitializeDefaultAttributes();
 	
+}
+
+void AEnemy::InitializeDefaultAttributes() const
+{
+	UAuraAbilitySystemBPLibrary::InitializeDefaultAttributes(this,ECharacterClass,Level,AbilitySystemComponent);
 }
 
 void AEnemy::HightLightActor()
