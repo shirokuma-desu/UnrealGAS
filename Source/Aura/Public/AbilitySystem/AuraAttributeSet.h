@@ -100,6 +100,10 @@ public:
 	FGameplayAttributeData Health;
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Mana, Category = "Mana Attributes")
 	FGameplayAttributeData Mana;
+	
+	//Meta Attribute
+	UPROPERTY(BlueprintReadOnly,  Category = "Meta Attribute")
+	FGameplayAttributeData IncommingDamage;
 
 	//Gameplay AttributeSet Accessors
 	
@@ -121,6 +125,11 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,HealthRegen)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ManaRegen)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,BlockChance)
+	
+	//Meta Attribute access
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,IncommingDamage)
+	
+	
 	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
