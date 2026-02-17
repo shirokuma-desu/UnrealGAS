@@ -27,4 +27,7 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
 	void UpdateWarpTarget(const FVector& Target);
+	
+	UFUNCTION(BlueprintNativeEvent,BlueprintCallable)
+	UAnimMontage* GetHitReactMontage();
 };
