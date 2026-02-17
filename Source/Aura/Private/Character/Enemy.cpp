@@ -94,6 +94,12 @@ int32 AEnemy::GetPlayerLevel()
 	return Level;
 }
 
+void AEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 void AEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;

@@ -27,6 +27,11 @@ public:
 	//* IAbilitySystemInterface *//
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual  void Die() override;
+	
+	UFUNCTION(NetMulticast, Reliable)
+	virtual  void MC_HandleDeath();
+	
 	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
 protected:
 	
