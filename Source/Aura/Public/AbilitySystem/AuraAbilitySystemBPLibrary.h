@@ -27,4 +27,7 @@ class AURA_API UAuraAbilitySystemBPLibrary : public UBlueprintFunctionLibrary
 	
 	UFUNCTION(BlueprintCallable, Category= "AuraAbiltySystemLibrary|CharacterClassDefault")
 	static void InitializeDefaultAttributes(const UObject* WorldContextObject,ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);
+	
+	UFUNCTION(BlueprintCallable, Category= "AuraAbiltySystemLibrary|CharacterClassDefault")
+	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC);
 };
