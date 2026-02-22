@@ -26,26 +26,28 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 	
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	
-	if (!CombatInterface) return;
-	auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation();
-	auto Rotation = (TargetVector - CombatSocketLocation).Rotation();
-	Rotation.Pitch = 0.f;
+	if (CombatInterface)
+	{
+		auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation();
+		auto Rotation = (TargetVector - CombatSocketLocation).Rotation();
+		Rotation.Pitch = 0.f;
 	
-	FTransform SpawnTransform;
-	SpawnTransform.SetRotation(Rotation.Quaternion());
-	SpawnTransform.SetLocation(CombatSocketLocation);
-	AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,SpawnTransform, GetOwningActorFromActorInfo(),
-		Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+		FTransform SpawnTransform;
+		SpawnTransform.SetRotation(Rotation.Quaternion());
+		SpawnTransform.SetLocation(CombatSocketLocation);
+		AAuraProjectile* Projectile = GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,SpawnTransform, GetOwningActorFromActorInfo(),
+			Cast<APawn>(GetOwningActorFromActorInfo()), ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	
-	const auto SourceAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
-	const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceAsc->MakeEffectContext());
+		const auto SourceAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceAsc->MakeEffectContext());
 	
-	FAuraGameplayTag GameplayTags = FAuraGameplayTag::Get();
-	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+		FAuraGameplayTag GameplayTags = FAuraGameplayTag::Get();
+		const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
 	
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,GameplayTags.Damage,ScaledDamage);
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,GameplayTags.Damage,ScaledDamage);
 	
-	Projectile->GE_Damage_SpecHandle = SpecHandle;
+		Projectile->GE_Damage_SpecHandle = SpecHandle;
 	
-	Projectile->FinishSpawning(SpawnTransform);
+		Projectile->FinishSpawning(SpawnTransform);
+	}
 }
