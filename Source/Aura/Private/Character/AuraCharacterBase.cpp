@@ -51,6 +51,7 @@ void AAuraCharacterBase::MC_HandleDeath_Implementation()
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::Type::PhysicsOnly);
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+	Dissolve();
 }
 
 // Called when the game starts or when spawned
@@ -93,6 +94,24 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	UAuraAbilitySystemComponent* AuraASC =  CastChecked<UAuraAbilitySystemComponent>(AbilitySystemComponent);
 	if (!HasAuthority()) return;
 	AuraASC->AddCharacterAbility(StartupAbilities);
+}
+
+void AAuraCharacterBase::Dissolve()
+{
+	if (IsValid(DissolveMaterialInstanceMesh))
+	{
+		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::
+		Create(DissolveMaterialInstanceMesh, this);
+		GetMesh()->SetMaterial(0,DynamicMatInst);
+		StartDissolveTimelineMesh(DynamicMatInst);
+	}
+	if (IsValid(DissolveMaterialInstanceWeapon))
+	{
+		UMaterialInstanceDynamic* DynamicMatInstWeapon = UMaterialInstanceDynamic::
+		Create(DissolveMaterialInstanceWeapon,this);
+		WeaponMeshComponent->SetMaterial(0,DynamicMatInstWeapon);
+		StartDissolveTimelineWeapon(DynamicMatInstWeapon);
+	}
 }
 
 // Called to bind functionality to input
