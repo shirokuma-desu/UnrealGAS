@@ -8,7 +8,9 @@
 #include "GameplayEffectExtension.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/MyPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -109,6 +111,7 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	}
 }
 
+
 void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
@@ -150,9 +153,25 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 		}
+		ShowFloatingText(Props,LocalIncomingDamage);
+		
 	}
 	
+	
 }
+
+
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties Props, float Damage) const
+{
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			MyPlayerController->ShowDamageNumber(Damage,Props.TargetCharacter);
+		}
+	}
+}
+
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
 {
@@ -233,4 +252,5 @@ void UAuraAttributeSet::OnRep_ManaRegen(const FGameplayAttributeData& OldManaReg
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet,ManaRegen,OldManaRegen);
 }
+
 
