@@ -4,7 +4,11 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 #include "AbilitySystemComponent.h"
 #include "AuraGameplayTag.h"
+#include "AbilitySystem/AuraAbilitySystemBPLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Interfaces/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 
 struct  AuraDamageStatics
 {
@@ -40,8 +44,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 	
-	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
-	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
+	AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
+	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
+	
+	ICombatInterface*  SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
+	ICombatInterface*  TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
 	
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 	
@@ -65,10 +72,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Damage*=0.5f;
 	}
 	
-<<<<<<< HEAD
-=======
 	//ArmorPen ignores a percentage of the target's armor
-	
 	float TargetArmor = 0.f;
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorDef,EvaluateParameters,TargetArmor);
 	TargetArmor = FMath::Max<float>(TargetArmor,0.f);
@@ -77,9 +81,17 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().ArmorPenDef,EvaluateParameters,SourceArmorPen);
 	SourceArmorPen = FMath::Max<float>(SourceArmorPen,0.f);
 	
-	const float EffectiveArmor = TargetArmor *= (100 - SourceArmorPen * 0.25f )/100.f;
-	Damage*= (100 - EffectiveArmor * 0.333f) / 100.f;
->>>>>>> 4ad79bafb0e77b8f49175a8963b3f7e73c52d270
+	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemBPLibrary::GetCharacterClassInfo(SourceAvatar);
+	const FRealCurve* ArmorPenCurve = CharacterClassInfo->DamageCalculationCoefficient->FindCurve(FName("ArmorPen"),FString());
+	
+	const float ArmorPenCoefficient  = ArmorPenCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	
+	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficient->FindCurve(FName("EffectiveArmor"),FString());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	
+	
+	const float EffectiveArmor = TargetArmor * (100 - SourceArmorPen * ArmorPenCoefficient )/100.f;
+	Damage*= (100 - EffectiveArmor * EffectiveArmorCoefficient) / 100.f;
 	
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncommingDamageAttribute(),EGameplayModOp::Additive, Damage);
 	
