@@ -63,6 +63,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 		Damage*=0.5f;
 	}
 	
+	
 	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncommingDamageAttribute(),EGameplayModOp::Additive, Damage);
 	
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
