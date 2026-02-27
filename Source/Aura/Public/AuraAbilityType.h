@@ -12,7 +12,7 @@ public:
 	bool IsCriticalHit() const {return bIsCriticalHit;}
 	bool IsBlockHit() const {return bIsBlock;}
 	
-	void SetCiriticalHit(bool IsCritical) { bIsCriticalHit = IsCritical; }
+	void SetCriticalHit(bool IsCritical) { bIsCriticalHit = IsCritical; }
 	void SetBlockHit(bool IsBlock) { bIsBlock = IsBlock; }
 	
 	virtual  UScriptStruct* GetScriptStruct() const override;
@@ -24,4 +24,6 @@ protected:
 	
 	UPROPERTY()
 	bool bIsCriticalHit = false;
+	UPROPERTY()
+	uint32 RepBits = 0;
 };
