@@ -17,6 +17,8 @@ public:
 	
 	virtual  UScriptStruct* GetScriptStruct() const override;
 	virtual  bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
+	virtual FAuraGameplayEffectContext* Duplicate() const override;
+	
 protected:
 	
 	UPROPERTY()
@@ -26,4 +28,14 @@ protected:
 	bool bIsCriticalHit = false;
 	UPROPERTY()
 	uint32 RepBits = 0;
+};
+
+template<>
+struct TStructOpsTypeTraits<FAuraGameplayEffectContext> : TStructOpsTypeTraitsBase2<FAuraGameplayEffectContext>
+{
+	enum
+	{
+		WithNetSerializer = true,
+		WithCopy = true,
+	};
 };
