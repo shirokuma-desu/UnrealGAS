@@ -17,7 +17,7 @@ public:
 	UDamageTextComponent();
 	
 	UFUNCTION(BlueprintImplementableEvent,BlueprintCallable)
-	void SetDamageText(float Damage);
+	void SetDamageText(float Damage, bool bBlockHit, bool bCriticalHit);
 
 protected:
 	// Called when the game starts

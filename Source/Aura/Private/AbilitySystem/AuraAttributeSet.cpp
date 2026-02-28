@@ -6,6 +6,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTag.h"
 #include "GameplayEffectExtension.h"
+#include "AbilitySystem/AuraAbilitySystemBPLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
@@ -153,7 +154,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 		}
-		ShowFloatingText(Props,LocalIncomingDamage);
+		
+		
+		const bool bBlockHit = UAuraAbilitySystemBPLibrary::IsBlockHit(Props.EffectContextHandle);
+		const bool bCriticalHit= UAuraAbilitySystemBPLibrary::IsCriticalHit(Props.EffectContextHandle);
+		
+		ShowFloatingText(Props,LocalIncomingDamage,bBlockHit,bCriticalHit);
 		
 	}
 	
@@ -161,13 +167,13 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 }
 
 
-void UAuraAttributeSet::ShowFloatingText(const FEffectProperties Props, float Damage) const
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties Props, float Damage,  bool bBlockHit, bool bCriticalHit) const
 {
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
 		if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
 		{
-			MyPlayerController->ShowDamageNumber(Damage,Props.TargetCharacter);
+			MyPlayerController->ShowDamageNumber(Damage,Props.TargetCharacter,bBlockHit,bCriticalHit);
 		}
 	}
 }
