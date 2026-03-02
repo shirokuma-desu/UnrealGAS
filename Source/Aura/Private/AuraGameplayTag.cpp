@@ -57,5 +57,37 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 		FString("Damage"));
 	GameplayTag.HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"),
 		FString("HitReact"));
+	
+	//Damage Types	
+	
+	GameplayTag.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Fire"),
+		FString("Fire Damage Type"));
+	GameplayTag.Damage_Lighting = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Lighting"),
+		FString("Lighting Damage Type"));
+	GameplayTag.Damage_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Arcane"),
+		FString("Arcane Damage Type"));
+	GameplayTag.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage.Physical"),
+		FString("Physical Damage Type"));
+	
+	//Resistance 
+	GameplayTag.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Fire"),
+		FString("Fire Resistance"));
+	GameplayTag.Attributes_Resistance_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Arcane"),
+		FString("Arcane Resistance"));
+	GameplayTag.Attributes_Resistance_Lighting = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Lighting"),
+		FString("Lighting Resistance"));
+	GameplayTag.Attributes_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Resistance.Physical"),
+		FString("Physical Resistance"));
+	
+	// Map of damage types  to Resistance
+	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Fire,GameplayTag.Attributes_Resistance_Fire);
+	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Lighting,GameplayTag.Attributes_Resistance_Lighting);
+	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Physical,GameplayTag.Attributes_Resistance_Physical);
+	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Arcane,GameplayTag.Attributes_Resistance_Arcane);
+	
+	
+	
+	//Effect
+	
 }
 
