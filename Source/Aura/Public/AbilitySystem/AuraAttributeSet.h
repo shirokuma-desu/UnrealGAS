@@ -101,6 +101,16 @@ public:
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing = OnRep_Mana, Category = "Mana Attributes")
 	FGameplayAttributeData Mana;
 	
+	//Resistance Attribute 
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing= OnRep_FireResistance, Category="Resistance Attribute")
+	FGameplayAttributeData FireResistance; 
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing= OnRep_ArcaneResistance, Category="Resistance Attribute")
+	FGameplayAttributeData ArcaneResistance;
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing= OnRep_LightingResistance, Category="Resistance Attribute")
+	FGameplayAttributeData LightingResistance;
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing= OnRep_PhysicalResistance, Category="Resistance Attribute")
+	FGameplayAttributeData PhysicalResistance;
+	
 	//Meta Attribute
 	UPROPERTY(BlueprintReadOnly,  Category = "Meta Attribute")
 	FGameplayAttributeData IncommingDamage;
@@ -125,6 +135,11 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,HealthRegen)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ManaRegen)
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,BlockChance)
+	//Resistance attribute access
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,FireResistance)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,PhysicalResistance)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,ArcaneResistance)
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,LightingResistance)
 	
 	//Meta Attribute access
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,IncommingDamage)
@@ -163,6 +178,14 @@ public:
 	void OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen) const;
 	UFUNCTION()
 	void OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen) const;
+	UFUNCTION()
+	void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
+	UFUNCTION()
+	void OnRep_ArcaneResistance(const FGameplayAttributeData& OldArcaneResistance) const;
+	UFUNCTION()
+	void OnRep_LightingResistance(const FGameplayAttributeData& OldLightingResistance) const;
+	UFUNCTION()
+	void OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const;
 
 private:
 	void SetEffectProperties(const FGameplayEffectModCallbackData Data, FEffectProperties& Props) const;
