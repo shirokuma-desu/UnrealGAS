@@ -31,6 +31,10 @@ void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<
 			//Do something
 		}*/
 	
+		const bool bIsEnemy = ATarget -> ActorHasTag(FName("Enemy"));
+		if (bIsEnemy && !bApplyEffectToEnemies) return;
+	
+	
 		UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(ATarget);
 		if (TargetASC == nullptr) return;
 		check(GameplayEffectClass);
@@ -47,17 +51,23 @@ void AAuraEffectActor::ApplyGameplayEffectToTarget(AActor* ATarget, TSubclassOf<
 		//by using ASC
 		const FActiveGameplayEffectHandle ActiveGameplayEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
 
-	const bool bInfinite = EffectSpecHandle.Data.Get()->Def->DurationPolicy == EGameplayEffectDurationType::Infinite;
+		const bool bInfinite = EffectSpecHandle.Data.Get()->Def->DurationPolicy == EGameplayEffectDurationType::Infinite;
 		if (bInfinite && InfiniteEffectRemovalPolicy == E_RemoveEffectOnEndOverlap)
 		{
 			ActiveGameplayEffects.Add(ActiveGameplayEffectHandle,TargetASC);
 		}
-		
+		if (!bInfinite)
+		{
+			Destroy();
+		}
 }
 
 
 void AAuraEffectActor::OnBeginOverlap(AActor* TargetActor)
 {
+	const bool bIsEnemy = TargetActor -> ActorHasTag(FName("Enemy"));
+	if (bIsEnemy && !bApplyEffectToEnemies) return;
+	
 	if (InstanceEffectApplicationPolicy == E_ApplyEffectOnBeginOverlap)
 	{
 		ApplyGameplayEffectToTarget(TargetActor, InstanceGameplayEffectClass);
@@ -75,6 +85,9 @@ void AAuraEffectActor::OnBeginOverlap(AActor* TargetActor)
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 {
+	const bool bIsEnemy = TargetActor -> ActorHasTag(FName("Enemy"));
+	if (bIsEnemy && !bApplyEffectToEnemies) return;
+	
 	if (InstanceEffectApplicationPolicy == E_ApplyEffectOnEndOverlap)
 	{
 		ApplyGameplayEffectToTarget(TargetActor, InstanceGameplayEffectClass);

@@ -75,8 +75,11 @@ protected:
 	TArray<TSubclassOf<UGameplayEffect>> MultipleEffects;
 	
 	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
-	bool bDestroyOnEffectRemoval = false;
+	bool bDestroyOnEffectApplication = false;
 
+	UPROPERTY(EditAnywhere, Category = "Applied Effect",BlueprintReadOnly)
+	bool bApplyEffectToEnemies = false;
+	
 	UPROPERTY()
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveGameplayEffects;
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
