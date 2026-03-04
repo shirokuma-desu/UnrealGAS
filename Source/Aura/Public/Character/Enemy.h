@@ -9,6 +9,8 @@
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "Enemy.generated.h"
 
+class UBehaviorTree;
+class AAuraAIController;
 class UWidgetComponent;
 //Delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHoverEnemy);
@@ -43,6 +45,8 @@ public:
 	virtual int32 GetPlayerLevel() override;
 	virtual  void Die() override;
 	
+	virtual void PossessedBy(AController* NewController) override;
+	
 	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
 	
 	UPROPERTY(BlueprintReadOnly, Category= "Combat")
@@ -67,4 +71,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Character Class Default")
 	TObjectPtr<UWidgetComponent> HealthBar;
 	
+	UPROPERTY(EditDefaultsOnly, Category= "AI")
+	TObjectPtr<UBehaviorTree> BehaviorTree;
+	
+	UPROPERTY()
+	TObjectPtr<AAuraAIController> AuraAIController;
+ 	
 };
