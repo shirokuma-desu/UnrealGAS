@@ -76,5 +76,7 @@ protected:
 	
 	UPROPERTY()
 	TObjectPtr<AAuraAIController> AuraAIController;
+	
+	
  	
 };

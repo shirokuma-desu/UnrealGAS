@@ -122,11 +122,15 @@ void AEnemy::PossessedBy(AController* NewController)
 	
 	AuraAIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	AuraAIController->RunBehaviorTree(BehaviorTree);
+	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"),false);
+	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("RangeAttacker"),ECharacterClass  != ECharacterClass::Warrior);
+	
 }
 
 void AEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("HitReacting"),bHitReacting);
 }
 
