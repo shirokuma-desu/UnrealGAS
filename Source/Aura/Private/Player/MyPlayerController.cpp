@@ -170,8 +170,11 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 				{
 					SplineComponent->AddSplinePoint(PointLocation,ESplineCoordinateSpace::World);
 				}
-				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
-				IsAutoRunning = true;
+				if (NavPath->PathPoints.Num() > 0)
+				{
+					CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+					IsAutoRunning = true;
+				}
 			}
 		}
 		FollowTime = 0.f;
