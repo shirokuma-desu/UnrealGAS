@@ -37,7 +37,7 @@ protected:
 	
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
-	virtual FVector GetCombatSocketLocation() override;
+	virtual  FVector GetCombatSocketLocation_Implementation();
 	//var
 	UPROPERTY(EditAnywhere, Category= "Mesh| Weapon", BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
