@@ -36,7 +36,6 @@ UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
 void AAuraCharacterBase::Die()
 {
 	WeaponMeshComponent->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
-	
 	MC_HandleDeath();
 }
 
@@ -52,6 +51,7 @@ void AAuraCharacterBase::MC_HandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	Dissolve();
+	bDead = true;
 }
 
 // Called when the game starts or when spawned
@@ -69,6 +69,17 @@ FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
 {
 	check(WeaponMeshComponent);
 	return WeaponMeshComponent->GetSocketLocation(WeaponTipSocketName);
+}
+
+bool AAuraCharacterBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+
+AActor* AAuraCharacterBase::GetAvatarActor_Implementation() 
+{
+	return this;
 }
 
 
