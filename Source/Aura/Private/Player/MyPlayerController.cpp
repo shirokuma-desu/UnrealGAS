@@ -109,7 +109,7 @@ void AMyPlayerController::CursorTrace()
 	if (LastActor != ThisActor)
 	{
 		if (LastActor) LastActor->UnHighLightActor();
-		if (ThisActor) ThisActor->HightLightActor();
+		if (ThisActor) ThisActor->HighLightActor();
 	}
 
 }

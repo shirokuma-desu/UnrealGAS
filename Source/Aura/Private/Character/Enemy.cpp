@@ -92,7 +92,7 @@ void AEnemy::InitializeDefaultAttributes() const
 	UAuraAbilitySystemBPLibrary::InitializeDefaultAttributes(this,ECharacterClass,Level,AbilitySystemComponent);
 }
 
-void AEnemy::HightLightActor()
+void AEnemy::HighLightActor()
 {
 	OnHoverHappened.Broadcast();
 }
@@ -100,6 +100,16 @@ void AEnemy::HightLightActor()
 void AEnemy::UnHighLightActor()
 {
 	OnNotHoverEnemyHappened.Broadcast();
+}
+
+void AEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AEnemy::GetCombatTarget_Implementation() const
+{
+	return  CombatTarget;
 }
 
 int32 AEnemy::GetPlayerLevel()

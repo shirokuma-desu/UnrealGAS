@@ -38,8 +38,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Events|Highlight")
 	FOnNotHoverEnemy OnNotHoverEnemyHappened;
 	//* Interaction interface
-	virtual void HightLightActor() override;
+	virtual void HighLightActor() override;
 	virtual void UnHighLightActor() override;
+	virtual void SetCombatTarget_Implementation(AActor* InCombatTarget) override;
+	virtual AActor* GetCombatTarget_Implementation() const override;
 	
 	//* Combat Interface
 	virtual int32 GetPlayerLevel() override;
@@ -57,6 +59,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category= "Combat")
 	float LifeSpan = 5.f;
+	
+	UPROPERTY(BlueprintReadWrite, Category= "Combat")
+	TObjectPtr<AActor> CombatTarget;
 	
 protected:
 	virtual void BeginPlay() override;
