@@ -159,7 +159,7 @@ void UAuraAbilitySystemBPLibrary::GetLivePlayerWithinRadius(const UObject* World
 			FCollisionShape::MakeSphere(Radius), SphereQueryParams);
 		for (FOverlapResult& OverlapResult : OverlapResults)
 		{
-			if (OverlapResult.GetActor()->Implements<UCombatInterface>() &&  !ICombatInterface::Execute_IsDead(OverlapResult.GetActor());)
+			if (OverlapResult.GetActor()->Implements<UCombatInterface>() &&  !ICombatInterface::Execute_IsDead(OverlapResult.GetActor()))
 			{
 				OutOverlappingActors.AddUnique(ICombatInterface::Execute_GetAvatarActor(OverlapResult.GetActor()));
 			}
