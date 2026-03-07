@@ -44,7 +44,7 @@ void AEnemy::BeginPlay()
 	InitAbilityActorInfo();
 	if (HasAuthority())
 	{
-		UAuraAbilitySystemBPLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
+		UAuraAbilitySystemBPLibrary::GiveStartupAbilities(this, AbilitySystemComponent,ECharacterClass);
 	}
 	
 	

@@ -87,7 +87,9 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	
 	
 	
-	//Effect
+	//Abilities 
+	GameplayTag.Ability_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Attack"),
+		FString("Attack Ability Task"));
 	
 }
 
