@@ -85,6 +85,13 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Physical,GameplayTag.Attributes_Resistance_Physical);
 	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Arcane,GameplayTag.Attributes_Resistance_Arcane);
 	
+	//Montage 
+	GameplayTag.Montage_Attack_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Montage.Attack.Weapon"),
+	FString("Montage Attack Weapon"));
+	GameplayTag.Montage_Attack_LeftHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Montage.Attack.LeftHand"),
+		FString("Montage Attack Left Hand"));
+	GameplayTag.Montage_Attack_RightHand = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Montage.Attack.RightHand"),
+		FString("Weapon Attack Right Hand"));
 	
 	
 	//Abilities 
