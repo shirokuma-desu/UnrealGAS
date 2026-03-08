@@ -78,14 +78,14 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	/*if(Attribute == GetHealthAttribute())
+	if(Attribute == GetHealthAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue,0.f,GetMaxHealth());
 	}
 	if (Attribute == GetMaxManaAttribute())
 	{
 		NewValue = FMath::Clamp(NewValue,0.f,GetMaxMana());
-	}*/
+	}
 }
 
 //FGameplayEffectModCallbackData is a structure provided by Unreal’s GAS that contains all the information
@@ -101,7 +101,7 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 	{
 		Props.SourceAvatarActor = Props.SourceASC->AbilityActorInfo->AvatarActor.Get();
 		Props.SourceController = Props.SourceASC->AbilityActorInfo->PlayerController.Get();
-		if (Props.SourceController == nullptr && Props.SourceController != nullptr)
+		if (Props.SourceController == nullptr && Props.SourceAvatarActor != nullptr)
 		{
 			if (const APawn* Pawn = Cast<APawn>(Props.SourceAvatarActor))
 			{
@@ -111,6 +111,10 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 		if (Props.SourceController)
 		{
 			Props.SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+		}
+		if (Props.SourceCharacter == nullptr)
+		{
+			Props.SourceCharacter = Cast<ACharacter>(Props.SourceAvatarActor);
 		}
 	}
 	if (Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
@@ -182,6 +186,10 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties Props, float Da
 	if (Props.SourceCharacter != Props.TargetCharacter)
 	{
 		if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(Props.SourceCharacter->Controller))
+		{
+			MyPlayerController->ShowDamageNumber(Damage,Props.TargetCharacter,bBlockHit,bCriticalHit);
+		}
+		if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(Props.TargetCharacter->Controller))
 		{
 			MyPlayerController->ShowDamageNumber(Damage,Props.TargetCharacter,bBlockHit,bCriticalHit);
 		}
