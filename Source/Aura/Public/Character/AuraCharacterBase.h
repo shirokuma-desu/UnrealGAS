@@ -27,22 +27,26 @@ public:
 	//* IAbilitySystemInterface *//
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
-	
-	
-	UFUNCTION(NetMulticast, Reliable)
-	virtual  void MC_HandleDeath();
-	
-	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
-protected:
-	
 	//combat interface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 	virtual void Die() override;
 	virtual	void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
-	virtual FVector GetCombatSocketLocation_Implementation();
+	virtual FVector GetCombatSocketLocation_Implementation() override;
 	virtual bool IsDead_Implementation() const override;
-	virtual AActor* GetAvatarActor_Implementation() ;
+	virtual AActor* GetAvatarActor_Implementation() override;
+	virtual TArray<FTaggedMontage> GetAllAttackMontage_Implementation() override;
+	
+	UFUNCTION(NetMulticast, Reliable)
+	virtual  void MC_HandleDeath();
+	
+	UPROPERTY(EditAnywhere, Category="Combat")
+	TArray<FTaggedMontage> AttackMontages;
+	
+	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
+protected:
+	
+	
 	
 	//var
 	UPROPERTY(EditAnywhere, Category= "Mesh| Weapon", BlueprintReadOnly)
@@ -67,7 +71,7 @@ protected:
 	
 	virtual void InitializeDefaultAttributes() const;
 	
-	void AddCharacterAbilities();
+	void AddCharacterAbilities() const;
 	
 	void Dissolve();
 	
