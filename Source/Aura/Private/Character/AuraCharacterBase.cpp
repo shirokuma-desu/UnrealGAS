@@ -4,6 +4,7 @@
 #include "Character/AuraCharacterBase.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -65,10 +66,23 @@ void AAuraCharacterBase::InitAbilityActorInfo()
 {
 }
 
-FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation()
+FVector AAuraCharacterBase::GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag)
 {
-	check(WeaponMeshComponent);
-	return WeaponMeshComponent->GetSocketLocation(WeaponTipSocketName);
+	const FAuraGameplayTag& GameplayTags = FAuraGameplayTag::Get();
+	
+	if (MontageTag.MatchesTagExact(FAuraGameplayTag::Get().Montage_Attack_Weapon) && IsValid(WeaponMeshComponent))
+	{
+		return WeaponMeshComponent->GetSocketLocation(WeaponTipSocketName);	
+	}
+	if (MontageTag.MatchesTagExact(FAuraGameplayTag::Get().Montage_Attack_LeftHand))
+	{
+		return GetMesh()->GetSocketLocation(LeftHandSocket);	
+	}
+	if (MontageTag.MatchesTagExact(FAuraGameplayTag::Get().Montage_Attack_RightHand))
+	{
+		return GetMesh()->GetSocketLocation(RightHandSocket);	
+	}
+	return FVector();
 }
 
 bool AAuraCharacterBase::IsDead_Implementation() const

@@ -32,7 +32,7 @@ public:
 	virtual void Die() override;
 	virtual	void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
-	virtual FVector GetCombatSocketLocation_Implementation() override;
+	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
 	virtual bool IsDead_Implementation() const override;
 	virtual AActor* GetAvatarActor_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAllAttackMontage_Implementation() override;
@@ -67,6 +67,12 @@ protected:
 	UPROPERTY(EditAnywhere,Category="Combat")
 	FName WeaponTipSocketName;
 
+	UPROPERTY(EditAnywhere,Category="Combat")
+	FName LeftHandSocket;
+	
+	UPROPERTY(EditAnywhere,Category="Combat")
+	FName RightHandSocket;
+	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float level) const;
 	
 	virtual void InitializeDefaultAttributes() const;
