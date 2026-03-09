@@ -47,6 +47,9 @@ class AURA_API UAuraAbilitySystemBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary| GameplayEffect")
 	static void SetIsCriticalHit(UPARAM(ref) FGameplayEffectContextHandle& EffectContextHandle, bool IsCriticalHit);
 	
-	UFUNCTION(BlueprintCallable, Category= "Gameplay Mechanic")
+	UFUNCTION(BlueprintCallable, Category= " AuraAbiltySystemLibrary |Gameplay Mechanic")
 	static void GetLivePlayerWithinRadius (const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorToIgnore, float Radius, const FVector& SphereLocation);
+	
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|Gameplay Mechanic")
+	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor); 
 };
