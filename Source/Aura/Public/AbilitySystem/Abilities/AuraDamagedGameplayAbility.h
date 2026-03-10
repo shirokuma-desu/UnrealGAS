@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AuraGameplayAbility.h"
+#include "Interfaces/CombatInterface.h"
 #include "AuraDamagedGameplayAbility.generated.h"
 
 /**
@@ -24,4 +25,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category= "Damage")
 	TMap<FGameplayTag, FScalableFloat> DamageTypesMap;
+	
+	UFUNCTION(BlueprintPure)
+	FTaggedMontage GetRandomTagMontageFromArr(const TArray<FTaggedMontage>& TaggedMontages) const;
 };
