@@ -11,6 +11,8 @@ UMMC_MaxMana::UMMC_MaxMana()
 	IntelligenceDef.AttributeSource = EGameplayEffectAttributeCaptureSource::Target;
 	IntelligenceDef.AttributeToCapture = UAuraAttributeSet::GetIntelligenceAttribute();
 	IntelligenceDef.bSnapshot = false;
+	
+	RelevantAttributesToCapture.Add(UMMC_MaxMana::IntelligenceDef);  
 }
 
 float UMMC_MaxMana::CalculateBaseMagnitude_Implementation(const FGameplayEffectSpec& Spec) const

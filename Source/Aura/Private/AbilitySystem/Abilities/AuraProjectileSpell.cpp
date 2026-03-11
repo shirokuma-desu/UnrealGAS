@@ -23,7 +23,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 {
 	const bool IsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!IsServer) return;
-	
+		
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
 	
 	if (CombatInterface)
@@ -32,7 +32,6 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 		auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation_Implementation(FAuraGameplayTag::Get().Montage_Attack_Weapon);
 		// or auto CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 		auto Rotation = (TargetVector - CombatSocketLocation).Rotation();
-		Rotation.Pitch = 0.f;
 	
 		FTransform SpawnTransform;
 		SpawnTransform.SetRotation(Rotation.Quaternion());
@@ -42,15 +41,20 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 		
 		
 		const auto SourceAsc = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
-		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceAsc->MakeEffectContext());
+		
+		
+		
 		FGameplayEffectContextHandle EffectContextHandle = SourceAsc->MakeEffectContext();
 		EffectContextHandle.SetAbility(this);
 		EffectContextHandle.AddSourceObject(Projectile);
 		TArray<TWeakObjectPtr<AActor>> Actors;
+		Actors.Add(Projectile);
 		EffectContextHandle.AddActors(Actors);
 		FHitResult HitResult;
 		HitResult.Location = TargetVector;
 		EffectContextHandle.AddHitResult(HitResult);
+		
+		const FGameplayEffectSpecHandle SpecHandle = SourceAsc->MakeOutgoingSpec(DamageEffectClass,GetAbilityLevel(),SourceAsc->MakeEffectContext());
 		
 		FAuraGameplayTag GameplayTags = FAuraGameplayTag::Get();
 		
