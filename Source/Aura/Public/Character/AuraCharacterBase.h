@@ -49,7 +49,7 @@ protected:
 	
 	
 	//var
-	UPROPERTY(EditAnywhere, Category= "Mesh| Weapon", BlueprintReadOnly)
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category= "Mesh| Weapon", BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> WeaponMeshComponent;
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
