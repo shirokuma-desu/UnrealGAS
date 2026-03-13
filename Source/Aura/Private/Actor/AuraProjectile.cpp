@@ -61,7 +61,7 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
                                       UPrimitiveComponent* OtherComp, int32 Otherbodyindex, bool bfromsweep, const FHitResult& SweepResult)
 {
 	
-	if (GE_Damage_SpecHandle.IsValid() && GE_Damage_SpecHandle.Data.Get()->GetContext().GetEffectCauser() ==  OtherActor)
+	if (!GE_Damage_SpecHandle.IsValid() || GE_Damage_SpecHandle.Data.Get()->GetContext().GetEffectCauser() ==  OtherActor)
 	{
 		return;
 	}
