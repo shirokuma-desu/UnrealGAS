@@ -29,7 +29,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 	if (CombatInterface)
 	{
 		
-		auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation_Implementation(FAuraGameplayTag::Get().Montage_Attack_Weapon);
+		auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation_Implementation(FAuraGameplayTag::Get().CombatSocket_Weapon);
 		// or auto CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 		auto Rotation = (TargetVector - CombatSocketLocation).Rotation();
 	

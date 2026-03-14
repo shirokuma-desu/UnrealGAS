@@ -38,6 +38,7 @@ public:
 	virtual AActor* GetAvatarActor_Implementation() override;
 	virtual TArray<FTaggedMontage> GetAllAttackMontage_Implementation() override;
 	virtual UNiagaraSystem* GetBloodEffect_Implementation() override;
+	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual  void MC_HandleDeath();
 	
