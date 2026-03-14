@@ -7,6 +7,7 @@
 #include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAuraCharacterBase::AAuraCharacterBase()
@@ -52,6 +53,9 @@ void AAuraCharacterBase::MC_HandleDeath_Implementation()
 	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic,ECR_Block);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	Dissolve();
+	
+	UGameplayStatics::PlaySoundAtLocation(this,DeadSound,GetActorLocation(),GetActorRotation());
+	
 	bDead = true;
 }
 
