@@ -19,7 +19,7 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	
 }
 
-void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector, const FGameplayTag& SocketTag)
 {
 	const bool IsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!IsServer) return;
@@ -29,7 +29,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector)
 	if (CombatInterface)
 	{
 		
-		auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation_Implementation(FAuraGameplayTag::Get().CombatSocket_Weapon);
+		auto CombatSocketLocation = CombatInterface->GetCombatSocketLocation_Implementation(SocketTag);
 		// or auto CombatSocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo());
 		auto Rotation = (TargetVector - CombatSocketLocation).Rotation();
 	
