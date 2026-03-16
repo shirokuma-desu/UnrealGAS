@@ -52,6 +52,7 @@ void AAuraProjectile::Destroyed()
 		if (HissSFXComponent != nullptr)
 		{
 		HissSFXComponent->Stop();
+			bHit = true;
 		}
 	}
 	Super::Destroyed();
@@ -71,6 +72,7 @@ void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, 
 		UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
 		if (HissSFXComponent) HissSFXComponent->Stop();
+		bHit = true;
 	}
 	if (HasAuthority())
 	{
