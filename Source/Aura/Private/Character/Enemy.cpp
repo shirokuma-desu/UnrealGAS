@@ -35,6 +35,8 @@ AEnemy::AEnemy()
 	bUseControllerRotationRoll = false;
 	
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
+	
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void AEnemy::BeginPlay()
