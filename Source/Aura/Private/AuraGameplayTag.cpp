@@ -98,6 +98,8 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	//Abilities 
 	GameplayTag.Ability_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Attack"),
 		FString("Attack Ability Task"));
+	GameplayTag.Ability_Summon= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Summon"),
+		FString("Summon Ability Task"));
 	
 	
 	// Montage Tags
