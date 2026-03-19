@@ -21,7 +21,7 @@ protected:
 		const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 	
 	UFUNCTION(BlueprintCallable,Category="Aura|ProjectileSpell")
-	void SpawnProjectile(const FVector& TargetVector, const FGameplayTag& SocketTag);
+	void SpawnProjectile(const FVector& TargetVector, const FGameplayTag& SocketTag, bool bOverridePitch = false, float OverridePitch = 0.f);
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class AAuraProjectile> ProjectileClass;
