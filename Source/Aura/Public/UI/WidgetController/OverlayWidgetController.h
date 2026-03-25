@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "OverlayWidgetController.generated.h"
 
+class UAuraAbilitySystemComponent;
 class UAuraUserWidget;
 struct FOnAttributeChangeData;
 
@@ -73,6 +74,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
 	TObjectPtr<class UAbilityInfo> AbilityInfo;
 	
+	void OnInitializeStartupAbility(UAuraAbilitySystemComponent* AuraASC);
 };
 
 template <typename T>

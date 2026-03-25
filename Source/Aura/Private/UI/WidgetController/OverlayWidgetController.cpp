@@ -41,8 +41,19 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			OnMaxManaChanged.Broadcast(Data.NewValue);
 		}
 		);
+	
+	if (auto AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		if (AuraASC->bStartupAbilityGiven)
+		{
+			OnInitializeStartupAbility(AuraASC);
+		}
+		else
+		{
+			AuraASC->OnAbilityGivenHandler.AddUObject(this,&UOverlayWidgetController::OnInitializeStartupAbility);
+		}
 		
-	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->OnEffectAssetTagsHandler.AddLambda(
+		AuraASC->OnEffectAssetTagsHandler.AddLambda(
 	[this](const FGameplayTagContainer& AssetTags)
 	{
 		/*
@@ -62,6 +73,14 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		}
 	}
 	);
+	}
+}
+
+void UOverlayWidgetController::OnInitializeStartupAbility(UAuraAbilitySystemComponent* AuraASC)
+{
+	//Todo get infomation about all given abilities, look up their ability info, and boardcast it to widget
+	if (!AuraASC->bStartupAbilityGiven) return;
+	
 	
 }
 
