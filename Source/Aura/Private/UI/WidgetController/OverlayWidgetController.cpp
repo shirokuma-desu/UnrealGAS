@@ -5,6 +5,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -81,6 +82,16 @@ void UOverlayWidgetController::OnInitializeStartupAbility(UAuraAbilitySystemComp
 	//Todo get infomation about all given abilities, look up their ability info, and boardcast it to widget
 	if (!AuraASC->bStartupAbilityGiven) return;
 	
+	FForEachAbility BroadcastDelegate;
+	BroadcastDelegate.BindLambda([this,AuraASC](const FGameplayAbilitySpec& AbilitySpec	)
+	{
+		//Todo Need a way to figure out ability tag for given ability spec.
+		
+		auto Info = AbilityInfo->FindAbilityInfoByTag(AuraASC->GetAbilityTagFromSpec(AbilitySpec));
+		Info.InputTag = AuraASC->GetInputTagFromSpec(AbilitySpec);
+		AbilityInfoDelegate.Broadcast(Info);
+		});
 	
+	AuraASC->ForEachAbility(BroadcastDelegate);
 }
 
