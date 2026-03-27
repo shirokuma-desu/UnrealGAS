@@ -6,6 +6,8 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
+#include "AbilitySystem/Data/LevelUpInfo.h"
+#include "Player/MyPlayerState.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
@@ -19,8 +21,13 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
+	AMyPlayerState* MyPlayerState = CastChecked<AMyPlayerState>(PlayerState);
+	MyPlayerState->OnXPChangeDelegate.AddUObject(this,&UOverlayWidgetController::OnXPChanged);
+	
+	
+	
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
-
+	
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetHealthAttribute()).AddLambda(
 		[this](const FOnAttributeChangeData& Data)
 		{
@@ -93,5 +100,26 @@ void UOverlayWidgetController::OnInitializeStartupAbility(UAuraAbilitySystemComp
 		});
 	
 	AuraASC->ForEachAbility(BroadcastDelegate);
+}
+
+void UOverlayWidgetController::OnXPChanged(int32 NewXP) const
+{
+	const AMyPlayerState* MyPlayerState = CastChecked<AMyPlayerState>(PlayerState);
+	const ULevelUpInfo* LevelUpInfo = MyPlayerState->LevelUpInfoDataAsset;
+	checkf(LevelUpInfo, TEXT("Unable To find LevelUpInfo. Please fill out Myplayerstate Blueprint"));
+	
+	const int32 Level  = LevelUpInfo->FindLevelUpInforXP(NewXP);
+	const int32 MaxLevel = LevelUpInfo->LevelUpInformations.Num();
+	if (Level <= MaxLevel && Level > 0)
+	{
+		const int32 LevelUpRequirement = LevelUpInfo->LevelUpInformations[Level].LevelUpRequirement;
+		const int32 PreviousLevelUpRequirement = LevelUpInfo->LevelUpInformations[Level -1].LevelUpRequirement;
+		const int32 DeltaLevelRequirement = LevelUpRequirement - PreviousLevelUpRequirement;
+		const int32 XPForThisLevel = NewXP - PreviousLevelUpRequirement;
+		
+		const float XPBarPercent = static_cast<float>(XPForThisLevel / DeltaLevelRequirement);
+		
+		OnXPPercentChangeDelegate.Broadcast(XPBarPercent);
+	}
 }
 

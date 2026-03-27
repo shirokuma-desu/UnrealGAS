@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerState.h"
 #include "MyPlayerState.generated.h"
 
+class ULevelUpInfo;
 class UAbilitySystemComponent;
 class UAttributeSet;
 /**
@@ -38,6 +39,8 @@ public:
 	FOnPlayerStatsChange OnXPChangeDelegate;
 	FOnPlayerStatsChange OnLevelChangeDelegate;
 	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<ULevelUpInfo> LevelUpInfoDataAsset;
 	
 protected:
 	UPROPERTY(VisibleAnywhere)

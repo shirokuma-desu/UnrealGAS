@@ -66,6 +66,9 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
 	FAbilityInfoSignature AbilityInfoDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS| XP")
+    FOnAttributeChangeDelegate OnXPPercentChangeDelegate;
 
 
 	
@@ -80,6 +83,10 @@ protected:
 	TObjectPtr<class UAbilityInfo> AbilityInfo;
 	
 	void OnInitializeStartupAbility(UAuraAbilitySystemComponent* AuraASC);
+	
+	void OnXPChanged(int32 NewXP) const;
+	
+	
 };
 
 template <typename T>
