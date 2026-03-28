@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "GameplayEffect.h"
 #include "NiagaraSystem.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
@@ -114,6 +115,11 @@ protected:
 	
 	//Minions
 	int32 MinionCount = 0;
+	
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character Class Default")
+	ECharacterClass ECharacterClass = ECharacterClass::Warrior;
 	
 private:
 	

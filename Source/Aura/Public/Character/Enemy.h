@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interfaces/IInteraction.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
@@ -71,8 +70,7 @@ protected:
 	bool bIsHighLight = false;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character Class Default")
 	int32 Level = 1;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Character Class Default")
-	ECharacterClass ECharacterClass = ECharacterClass::Warrior;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= "Character Class Default")
 	TObjectPtr<UWidgetComponent> HealthBar;
 	
