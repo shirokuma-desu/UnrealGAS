@@ -118,7 +118,9 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	GameplayTag.Montage_Attack_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Montage.Attack.4"),
 	FString("Attack 4"));
 	
-	
+	//Meta Attributes
+	GameplayTag.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Meta.IncomingXP"),
+		FString("Incoming XP Meta Attributes"));
 	
 }
 
