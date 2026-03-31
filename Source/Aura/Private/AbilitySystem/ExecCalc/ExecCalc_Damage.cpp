@@ -81,8 +81,17 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
 	
-	ICombatInterface*  SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
-	ICombatInterface*  TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
+	int32 SourcePlayerLevel = 1;
+	if (SourceAvatar->Implements<UCombatInterface>())
+	{
+		SourcePlayerLevel = ICombatInterface::Execute_GetPlayerLevel(SourceAvatar);
+	}
+	
+	int32 TargetPlayerLevel = 1;
+	if (TargetAvatar->Implements<UCombatInterface>())
+	{
+		TargetPlayerLevel = ICombatInterface::Execute_GetPlayerLevel(TargetAvatar);
+	}
 	
 	const FGameplayEffectSpec& Spec = ExecutionParams.GetOwningSpec();
 	
@@ -148,14 +157,14 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemBPLibrary::GetCharacterClassInfo(SourceAvatar);
 	const FRealCurve* ArmorPenCurve = CharacterClassInfo->DamageCalculationCoefficient->FindCurve(FName("ArmorPen"),FString());
 	
-	const float ArmorPenCoefficient  = ArmorPenCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	const float ArmorPenCoefficient  = ArmorPenCurve->Eval(SourcePlayerLevel);
 	
 	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficient->FindCurve(FName("EffectiveArmor"),FString());
-	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(SourcePlayerLevel);
 	//---------->
 	
 	const FRealCurve* CritResistCurve = CharacterClassInfo->DamageCalculationCoefficient->FindCurve(FName("CriticalResist"),FString());
-	const float CritResistCoefficient = CritResistCurve->Eval(SourceCombatInterface->GetPlayerLevel());
+	const float CritResistCoefficient = CritResistCurve->Eval(TargetPlayerLevel);
 	const float EffectiveCritHitChance = SourceCritHitChance - TargetCritResist * CritResistCoefficient;
 	
 	// Critical hit resit reduce critical hit chance by a percent

@@ -43,7 +43,7 @@ public:
 	virtual AActor* GetCombatTarget_Implementation() const override;
 	
 	//* Combat Interface
-	virtual int32 GetPlayerLevel() override;
+	virtual int32 GetPlayerLevel_Implementation() override;
 	virtual  void Die() override;
 	
 	virtual void PossessedBy(AController* NewController) override;
