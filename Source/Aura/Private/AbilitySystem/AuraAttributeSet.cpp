@@ -10,6 +10,7 @@
 #include "Aura/AuraLogChannels.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
+#include "Interfaces/PlayerInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/MyPlayerController.h"
@@ -182,6 +183,10 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		const float LocalIncomingXP = GetIncomingXP(); 
 		UE_LOG(LogAura,Log,TEXT("Incoming XP %f"),LocalIncomingXP);
 		SetIncomingXP(0);
+		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter,LocalIncomingXP);
+		}
 	}
 	
 }

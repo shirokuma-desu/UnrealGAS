@@ -66,3 +66,10 @@ int32 AAuraCharacter::GetPlayerLevel()
 	return MyPlayerState->GetPlayerLevel();
 }
 
+void AAuraCharacter::AddToXP_Implementation(int32 InXP)
+{
+	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	MyPlayerState->AddToXp(InXP);
+}
+
