@@ -27,4 +27,25 @@ public:
 	
 	UFUNCTION(BlueprintNativeEvent)
     void LevelUp();
+	
+	UFUNCTION(BlueprintNativeEvent)
+	int32 GetXP() const;
+	
+	UFUNCTION(BlueprintNativeEvent)
+	int32 FindLevelForXP(int32 InXP) const;
+	
+	UFUNCTION(BlueprintNativeEvent)
+	int32 GetAttributePointReward(int32 Level) const;
+	
+	UFUNCTION(BlueprintNativeEvent)
+	int32 GetSpellPointReward(int32 Level) const;
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void AddToPlayerLevel(int32 InPlayerLevel);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void AddToAttributePoint(int32 InAttributePoint);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void AddToSpellPoint(int32 InSpellPoint);
 };

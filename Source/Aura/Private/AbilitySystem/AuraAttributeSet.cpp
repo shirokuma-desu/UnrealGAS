@@ -11,7 +11,6 @@
 #include "GameFramework/Character.h"
 #include "Interfaces/CombatInterface.h"
 #include "Interfaces/PlayerInterface.h"
-#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Player/MyPlayerController.h"
 
@@ -183,8 +182,35 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		const float LocalIncomingXP = GetIncomingXP(); 
 		UE_LOG(LogAura,Log,TEXT("Incoming XP %f"),LocalIncomingXP);
 		SetIncomingXP(0);
-		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		
+		//todo : see if we should levelup
+		
+		//source character is the owner, since GA_ListenForEvent applies GE_EventBasedEffect, adding to Incoming XP
+		if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.TargetCharacter->Implements<UCombatInterface>())
 		{
+			const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+			const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
+			
+			const int32 NewLevel =IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter,CurrentXP + LocalIncomingXP);
+			const int32 NumLevelUps = NewLevel - CurrentLevel;
+			if (NumLevelUps > 0)
+			{
+				//TO DO: Get AttributePointsReward and Spell Reward
+				//Add To playerlevel
+				//Add to AttributePoint and Spell Points
+				//Fill up health and mana
+				const int32 AttributePointReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter,CurrentLevel);
+				const int32 SpellPointReward = IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter,CurrentLevel);
+				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+				IPlayerInterface::Execute_AddToAttributePoint(Props.SourceCharacter, AttributePointReward);
+				IPlayerInterface::Execute_AddToSpellPoint(Props.SourceCharacter, SpellPointReward);
+				
+				SetHealth(GetMaxHealth());
+				SetMana(GetMaxMana());
+				
+				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+			}
+			
 			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter,LocalIncomingXP);
 		}
 	}
