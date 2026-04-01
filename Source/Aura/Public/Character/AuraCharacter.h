@@ -7,6 +7,8 @@
 #include "Interfaces/PlayerInterface.h"
 #include "AuraCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
 /**
  * 
  */
@@ -35,6 +37,18 @@ public:
 	virtual void AddToAttributePoint_Implementation(int32 InAttributePoint) override;
 	virtual void AddToSpellPoint_Implementation(int32 InSpellPoint) override;
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TObjectPtr<UNiagaraComponent> LevelUpComponent;
+	
 private:
 	virtual void InitAbilityActorInfo() override;
+	
+	UFUNCTION(NetMulticast,Reliable)
+	void MC_LevelUpSFX() const;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> TopDownCameraComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> CameraBoom;
 };

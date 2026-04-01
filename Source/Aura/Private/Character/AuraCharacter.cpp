@@ -3,15 +3,32 @@
 
 #include "Character/AuraCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/MyPlayerController.h"
 #include "Player/MyPlayerState.h"
 #include "Aura/Public/UI/HUD/MyHUD.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 AAuraCharacter::AAuraCharacter()
 {
+	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
+	CameraBoom = CreateDefaultSubobject<USpringArmComponent>("CameraBoom");
+	CameraBoom->SetupAttachment(GetRootComponent());
+	CameraBoom->SetUsingAbsoluteRotation(true);
+	CameraBoom->bDoCollisionTest = false;
+	CameraBoom->bEnableCameraLag = true;
+	
+	TopDownCameraComponent->SetupAttachment(CameraBoom,	USpringArmComponent::SocketName);
+	TopDownCameraComponent->bUsePawnControlRotation = false;
+	
+	LevelUpComponent = CreateDefaultSubobject<UNiagaraComponent>("LevelUpNiagaraComponent");
+	LevelUpComponent->SetupAttachment(GetRootComponent());
+	LevelUpComponent->bAutoActivate = false;
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	//set yaw rotation speed
 	GetCharacterMovement()->RotationRate = FRotator(0, 400, 0);
@@ -42,6 +59,18 @@ void AAuraCharacter::InitAbilityActorInfo()
 		}
 	}
 	InitializeDefaultAttributes();
+}
+
+void AAuraCharacter::MC_LevelUpSFX_Implementation() const
+{
+	if (IsValid(LevelUpComponent))
+	{
+		const FVector CameraLocation = TopDownCameraComponent->GetComponentLocation();
+		const FVector NiagaraSystemLocation = LevelUpComponent->GetComponentLocation();
+		const FRotator ToCameraRotation = (CameraLocation - NiagaraSystemLocation).Rotation();
+		LevelUpComponent->SetWorldRotation(ToCameraRotation);
+		LevelUpComponent->Activate(true);
+	}
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)
@@ -76,7 +105,7 @@ void AAuraCharacter::AddToXP_Implementation(int32 InXP)
 
 void AAuraCharacter::LevelUp_Implementation()
 {
-	
+	MC_LevelUpSFX_Implementation();
 }
 
 int32 AAuraCharacter::GetXP_Implementation() const
