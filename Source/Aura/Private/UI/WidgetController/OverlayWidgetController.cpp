@@ -23,6 +23,10 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 {
 	AMyPlayerState* MyPlayerState = CastChecked<AMyPlayerState>(PlayerState);
 	MyPlayerState->OnXPChangeDelegate.AddUObject(this,&UOverlayWidgetController::OnXPChanged);
+	MyPlayerState->OnLevelChangeDelegate.AddLambda([this](int32 NewLevel)
+	{
+		OnPlayerLevelChangeDelegate.Broadcast(NewLevel);
+	});
 	
 	
 	

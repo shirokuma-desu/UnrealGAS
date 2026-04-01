@@ -33,6 +33,7 @@ struct FUIWidgetRow : public FTableRowBase
 
 //Declare delegates
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangeDelegate,float ,NewValue);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatsChangeDelegate,int32 ,NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributesChangeDelegate,float,NewValue, float, OldValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate, FUIWidgetRow, Row);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature,const FAuraAbilityInfo&, Info);
@@ -69,6 +70,9 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| XP")
     FOnAttributeChangeDelegate OnXPPercentChangeDelegate;
+	
+	UPROPERTY(BlueprintAssignable, Category = "GAS| XP")
+	FOnPlayerStatsChangeDelegate OnPlayerLevelChangeDelegate;
 
 
 	
