@@ -21,6 +21,8 @@ void AMyPlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>&
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AMyPlayerState, Level);
 	DOREPLIFETIME(AMyPlayerState, XP);
+	DOREPLIFETIME(AMyPlayerState, AttributePoints);
+	DOREPLIFETIME(AMyPlayerState, SpellPoints);
 }
 
 UAbilitySystemComponent* AMyPlayerState::GetAbilitySystemComponent() const
@@ -52,6 +54,18 @@ void AMyPlayerState::SetLevel(int32 InLevel)
 	OnLevelChangeDelegate.Broadcast(Level);
 }
 
+void AMyPlayerState::AddToAttributePoints(int32 InAttributePoints)
+{
+	AttributePoints+=InAttributePoints;
+	OnAttributePointsChangeDelegate.Broadcast(AttributePoints);
+}
+
+void AMyPlayerState::AddToSpellPoints(int32 InSpellPoints)
+{
+	SpellPoints+=InSpellPoints;
+	OnSpellPointsChangeDelegate.Broadcast(SpellPoints);
+}
+
 void AMyPlayerState::OnRep_Level(int32 OldLevel)
 {
 	OnLevelChangeDelegate.Broadcast(Level);
@@ -60,4 +74,15 @@ void AMyPlayerState::OnRep_Level(int32 OldLevel)
 void AMyPlayerState::OnRep_XP(int32 OldXP)
 {
 	OnXPChangeDelegate.Broadcast(XP);
+}
+
+void AMyPlayerState::OnRep_AttributePoints(int32 OldAttributePoints)
+{
+	OnAttributePointsChangeDelegate.Broadcast(AttributePoints);
+}
+
+
+void AMyPlayerState::OnRep_SpellPoints(int32 OldSpellPoints)
+{
+	OnSpellPointsChangeDelegate.Broadcast(SpellPoints);
 }
