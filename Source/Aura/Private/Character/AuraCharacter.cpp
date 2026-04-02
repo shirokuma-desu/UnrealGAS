@@ -147,13 +147,13 @@ void AAuraCharacter::AddToAttributePoint_Implementation(int32 InAttributePoint)
 {
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
-	//To do Add AttributePoint to playerstate
+	MyPlayerState->AddToAttributePoints(InAttributePoint);
 }
 
 void AAuraCharacter::AddToSpellPoint_Implementation(int32 InSpellPoint)
 {
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
-	//todo add spellpoint to playerstate
+	MyPlayerState->AddToSpellPoints(InSpellPoint);
 }	
 

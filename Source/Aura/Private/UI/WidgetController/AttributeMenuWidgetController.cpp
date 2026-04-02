@@ -16,6 +16,8 @@ void UAttributeMenuWidgetController::BroadcastInitialValues()
 	{
 		BoardCastAttributeInfo(Pair.Key,Pair.Value());
 	}
+	AMyPlayerState* MyPlayerState = CastChecked<AMyPlayerState>(PlayerState);
+	AttributePointsChangeDelegate.Broadcast(MyPlayerState->GetAttributePoints());
 }
 
 void UAttributeMenuWidgetController::BindCallbacksToDependencies()
