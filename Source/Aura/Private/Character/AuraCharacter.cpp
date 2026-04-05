@@ -155,5 +155,19 @@ void AAuraCharacter::AddToSpellPoint_Implementation(int32 InSpellPoint)
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
 	MyPlayerState->AddToSpellPoints(InSpellPoint);
+}
+
+int32 AAuraCharacter::GetAttributePoints_Implementation() const
+{
+	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	return MyPlayerState->GetAttributePoints();
+}
+
+int32 AAuraCharacter::GetSpellPoints_Implementation() const
+{
+	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
+	check(MyPlayerState);
+	return MyPlayerState->GetSpellPoints();
 }	
 
