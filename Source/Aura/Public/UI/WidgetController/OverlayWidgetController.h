@@ -36,7 +36,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangeDelegate,float ,Ne
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerStatsChangeDelegate,int32 ,NewValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnAttributesChangeDelegate,float,NewValue, float, OldValue);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowDelegate, FUIWidgetRow, Row);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAbilityInfoSignature,const FAuraAbilityInfo&, Info);
+
 	
 /**
  * 
@@ -65,8 +65,7 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	FMessageWidgetRowDelegate MessageWidgetRowHandler;
 	
 	
-	UPROPERTY(BlueprintAssignable, Category = "GAS| Attributes")
-	FAbilityInfoSignature AbilityInfoDelegate;
+	
 	
 	UPROPERTY(BlueprintAssignable, Category = "GAS| XP")
     FOnAttributeChangeDelegate OnXPPercentChangeDelegate;
@@ -83,12 +82,7 @@ protected:
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
-	TObjectPtr<class UAbilityInfo> AbilityInfo;
-	
-	void OnInitializeStartupAbility(UAuraAbilitySystemComponent* AuraASC);
-	
-	void OnXPChanged(int32 NewXP) const;
+	void OnXPChanged(int32 NewXP);
 	
 	
 };
