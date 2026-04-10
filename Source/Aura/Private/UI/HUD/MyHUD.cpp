@@ -5,6 +5,7 @@
 #include "UI/Widget/AuraUserWidget.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "UI/WidgetController/SpellMenuWidgetController.h"
 
 
 UOverlayWidgetController* AMyHUD::GetOverlayWidgetController(const FWidgetControllerParams& WidgetControllerParams)
@@ -31,6 +32,18 @@ UAttributeMenuWidgetController* AMyHUD::GetAttributeMenuWidgetController(
 	}
 	return  AttributeMenuWidgetController;
 	
+}
+
+USpellMenuWidgetController* AMyHUD::GetSpellMenuWidgetController(const FWidgetControllerParams& WidgetControllerParams)
+{
+	if (SpellMenuWidgetController == nullptr)
+	{
+		SpellMenuWidgetController = NewObject<USpellMenuWidgetController>(this, SpellMenuWidgetControllerClass);
+		SpellMenuWidgetController-> SetWidgetControllerParams(WidgetControllerParams);
+		SpellMenuWidgetController->BindCallbacksToDependencies();
+		return SpellMenuWidgetController;
+	}
+	return  SpellMenuWidgetController;
 }
 
 void AMyHUD::InitOverlayWidget(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ACS, UAttributeSet* AS)
