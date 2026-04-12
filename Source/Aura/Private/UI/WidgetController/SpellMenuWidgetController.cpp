@@ -5,10 +5,9 @@
 
 void USpellMenuWidgetController::BroadcastInitialValues()
 {
-	Super::BroadcastInitialValues();
+	BoardCastAbilityInfo();
 }
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
-	Super::BindCallbacksToDependencies();
 }

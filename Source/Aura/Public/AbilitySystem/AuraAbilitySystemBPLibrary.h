@@ -24,16 +24,16 @@ class AURA_API UAuraAbilitySystemBPLibrary : public UBlueprintFunctionLibrary
 	
 	public:
 	
-	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController", meta = (DefaultToSelf = "WordContextObject"))
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController", meta = (DefaultToSelf = "WorldContextObject"))
 	static bool MakeWidgetControllerParam(const UObject* WorldContextObject, FWidgetControllerParams& OutWidgetControllerParams, AMyHUD*& OutMyHUD);
 	
-	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController",meta = (DefaultToSelf = "WordContextObject"))
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController",meta = (DefaultToSelf = "WorldContextObject"))
 	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
 	
-	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController",meta = (DefaultToSelf = "WordContextObject"))
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController",meta = (DefaultToSelf = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController (const UObject* WorldContextObject);
 	
-	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController",meta = (DefaultToSelf = "WordContextObject"))
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|WidgetController",meta = (DefaultToSelf = "WorldContextObject"))
 	static USpellMenuWidgetController* GetSpellMenuWidgetController (const UObject* WorldContextObject);
 	
 	UFUNCTION(BlueprintCallable, Category= "AuraAbiltySystemLibrary|CharacterClassDefault")
