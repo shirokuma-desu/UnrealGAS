@@ -11,6 +11,7 @@ class UAuraGameplayAbility;
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTagsDelegate, const FGameplayTagContainer& /* Asset Tags*/);
 DECLARE_MULTICAST_DELEGATE(FAbilityGiven);	
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Tag*/)
 
 /**
  * 
@@ -41,6 +42,7 @@ public:
 	//delegate
 	FEffectAssetTagsDelegate OnEffectAssetTagsHandler;
 	FAbilityGiven OnAbilityGivenHandler;
+	FAbilityStatusChanged OnAbilityStatusChangedHandler;
 	
 	bool bStartupAbilityGiven = false;
 	
@@ -50,6 +52,9 @@ protected:
 	
 	UFUNCTION(Client, Reliable)
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const;
+	
+	UFUNCTION(Client, Reliable)
+	void ROC_UpdateAbilityStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag);
 	
 	virtual  void OnRep_ActivateAbilities() override;
 };

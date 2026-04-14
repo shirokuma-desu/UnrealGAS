@@ -157,7 +157,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 	for (const FAuraAbilityInfo& Info : AbilityInfo->AbilitiesInformation)
 	{
 		if (!Info.AbilityTag.IsValid()) continue;
-		if (Level >= Info.LevelRequirement) continue;
+		if (Level < Info.LevelRequirement) continue;
 			
 		if (GetSpecFromAbilityTag(Info.AbilityTag) == nullptr)
 		{
@@ -165,6 +165,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTag::Get().Ability_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
+			ROC_UpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTag::Get().Ability_Status_Eligible);
 		}
 	}
 }
@@ -181,6 +182,12 @@ void UAuraAbilitySystemComponent::ROS_UpgradeAttribute_Implementation(const FGam
 		IPlayerInterface::Execute_AddToAttributePoint(GetAvatarActor(), -1);
 	}
 	
+}
+
+void UAuraAbilitySystemComponent::ROC_UpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag,
+	const FGameplayTag& StatusTag)
+{
+	OnAbilityStatusChangedHandler.Broadcast(AbilityTag, StatusTag);
 }
 
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()

@@ -3,6 +3,9 @@
 
 #include "UI/WidgetController/SpellMenuWidgetController.h"
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/Data/AbilityInfo.h"
+
 void USpellMenuWidgetController::BroadcastInitialValues()
 {
 	BoardCastAbilityInfo();
@@ -10,4 +13,13 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
+	GetAuraAbilitySystemComponent()->OnAbilityStatusChangedHandler.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	{
+		if (AbilityInfo)
+		{
+			FAuraAbilityInfo Info = AbilityInfo->FindAbilityInfoByTag(AbilityTag);
+			Info.StatusTag = StatusTag;
+			AbilityInfoDelegate.Broadcast(Info);
+		}
+	});
 }
