@@ -31,9 +31,12 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
+	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 	
 	UFUNCTION(Server,Reliable)
 	void ROS_UpgradeAttribute(const FGameplayTag& AttributeTag);
+	
+	void UpdateAbilityStatus(int32 Level);
 	
 	//delegate
 	FEffectAssetTagsDelegate OnEffectAssetTagsHandler;
