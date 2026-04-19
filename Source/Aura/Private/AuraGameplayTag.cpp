@@ -106,6 +106,9 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 		FString("Attack Ability Task"));
 	GameplayTag.Ability_Summon= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Summon"),
 		FString("Summon Ability Task"));
+	GameplayTag.Ability_None= UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.None"),
+		FString("No Ability "));
+	
 	
 	GameplayTag.Ability_Fire_FireBolt =	UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Abilities.Fire.FireBolt"),
 		FString("FireBolt Ability Task"));
