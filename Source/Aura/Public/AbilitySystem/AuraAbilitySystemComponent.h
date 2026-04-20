@@ -11,7 +11,7 @@ class UAuraGameplayAbility;
 DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTagsDelegate, const FGameplayTagContainer& /* Asset Tags*/);
 DECLARE_MULTICAST_DELEGATE(FAbilityGiven);	
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Tag*/)
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Tag*/,int32 /*AbilityLevel*/)
 
 /**
  * 
@@ -36,6 +36,8 @@ public:
 	
 	UFUNCTION(Server,Reliable)
 	void ROS_UpgradeAttribute(const FGameplayTag& AttributeTag);
+	UFUNCTION(Server,Reliable)
+	void ROS_SpendSpellPoints(const FGameplayTag& AbilityTag);
 	
 	void UpdateAbilityStatus(int32 Level);
 	
@@ -54,7 +56,7 @@ protected:
 	void ClientEffectApplied(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& GameplayEffectSpec, FActiveGameplayEffectHandle ActiveGameplayEffectHandle) const;
 	
 	UFUNCTION(Client, Reliable)
-	void ROC_UpdateAbilityStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag);
+	void ROC_UpdateAbilityStatus(const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,int32 AbilityLevel);
 	
 	virtual  void OnRep_ActivateAbilities() override;
 };

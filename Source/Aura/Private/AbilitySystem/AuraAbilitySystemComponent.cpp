@@ -151,6 +151,32 @@ FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const F
 	return  nullptr;
 }
 
+void UAuraAbilitySystemComponent::ROS_SpendSpellPoints_Implementation(const FGameplayTag& AbilityTag)
+{
+	if (FGameplayAbilitySpec* AbilitySpec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (GetAvatarActor()->Implements<UPlayerInterface>())
+		{
+			IPlayerInterface::Execute_AddToSpellPoint(GetAvatarActor(),-1);
+		}
+		
+		const FAuraGameplayTag GameplayTag = FAuraGameplayTag::Get();
+		FGameplayTag Status = GetStatusFromSpec(*AbilitySpec);
+		if (Status.MatchesTagExact(GameplayTag.Ability_Status_Eligible))
+		{
+			AbilitySpec->DynamicAbilityTags.RemoveTag(GameplayTag.Ability_Status_Eligible);
+			AbilitySpec->DynamicAbilityTags.AddTag(GameplayTag.Ability_Status_Unlocked);
+			Status = GameplayTag.Ability_Status_Unlocked;
+		}
+		else if (Status.MatchesTagExact(GameplayTag.Ability_Status_Equipped) || Status.MatchesTagExact(GameplayTag.Ability_Status_Unlocked)) 
+		{
+			AbilitySpec->Level += 1;
+		}
+		ROC_UpdateAbilityStatus(AbilityTag,Status,AbilitySpec->Level);
+		MarkAbilitySpecDirty(*AbilitySpec);
+	}
+}
+
 void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 {
 	UAbilityInfo* AbilityInfo = UAuraAbilitySystemBPLibrary::GetAbilityInfo(GetAvatarActor());
@@ -165,7 +191,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)
 			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTag::Get().Ability_Status_Eligible);
 			GiveAbility(AbilitySpec);
 			MarkAbilitySpecDirty(AbilitySpec);
-			ROC_UpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTag::Get().Ability_Status_Eligible);
+			ROC_UpdateAbilityStatus(Info.AbilityTag,FAuraGameplayTag::Get().Ability_Status_Eligible,1);
 		}
 	}
 }
@@ -185,9 +211,9 @@ void UAuraAbilitySystemComponent::ROS_UpgradeAttribute_Implementation(const FGam
 }
 
 void UAuraAbilitySystemComponent::ROC_UpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag,
-	const FGameplayTag& StatusTag)
+	const FGameplayTag& StatusTag,int32 AbilityLevel)
 {
-	OnAbilityStatusChangedHandler.Broadcast(AbilityTag, StatusTag);
+	OnAbilityStatusChangedHandler.Broadcast(AbilityTag, StatusTag,AbilityLevel);
 }
 
 void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()

@@ -16,7 +16,7 @@ void USpellMenuWidgetController::BroadcastInitialValues()
 
 void USpellMenuWidgetController::BindCallbacksToDependencies()
 {
-	GetAuraAbilitySystemComponent()->OnAbilityStatusChangedHandler.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	GetAuraAbilitySystemComponent()->OnAbilityStatusChangedHandler.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag,int32 NewLevel)
 	{
 		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
 		{
@@ -80,8 +80,17 @@ void USpellMenuWidgetController::SpellGlobeSelected(const FGameplayTag& AbilityT
 	SpellGlobeSelectedDelegate.Broadcast(bEnableSpendPoints,bEnableEquip);
 }
 
+void USpellMenuWidgetController::SpendPointButtonPress()
+{
+	if (GetAuraAbilitySystemComponent())
+	{
+		GetAuraAbilitySystemComponent()->ROS_SpendSpellPoints(SelectedAbility.Ability);
+	}
+}
+
+
 void USpellMenuWidgetController::ShouldEnableButton(const FGameplayTag& AbilityStatus, int32 SpellPoints,
-	bool& bshouldEnableSpellButtons, bool& bShouldEnableEquipButton)
+                                                    bool& bshouldEnableSpellButtons, bool& bShouldEnableEquipButton)
 {
 	const FAuraGameplayTag GameplayTags = FAuraGameplayTag::Get();
 	bshouldEnableSpellButtons = false;

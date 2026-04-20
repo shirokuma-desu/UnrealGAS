@@ -35,8 +35,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SpellGlobeSelected(const FGameplayTag& AbilityTag);
 	
+	
+	UFUNCTION(BlueprintCallable)
+	void SpendPointButtonPress();
+	
+	
 	UPROPERTY(BlueprintAssignable)
 	FSpellGlobeSelectedSignature SpellGlobeSelectedDelegate;
+	
+	
 	
 private:
 	static void ShouldEnableButton(const FGameplayTag& AbilityStatus, int32 SpellPoints, 
