@@ -33,6 +33,7 @@ public:
 	static FGameplayTag GetStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
+	bool GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription);
 	
 	UFUNCTION(Server,Reliable)
 	void ROS_UpgradeAttribute(const FGameplayTag& AttributeTag);

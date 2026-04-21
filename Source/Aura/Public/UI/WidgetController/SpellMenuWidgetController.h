@@ -12,7 +12,7 @@
  * 
  */
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpellGlobeSelectedSignature, bool, bSpellPointButtonEnable, bool,bEquipButtonEnable);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignature, bool, bSpellPointButtonEnable, bool,bEquipButtonEnable, FString, DescriptionString, FString, NextLevelDescriptionString);
 
 struct  FSelectedAbility
 {
