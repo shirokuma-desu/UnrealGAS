@@ -10,6 +10,19 @@
 #include "Interfaces/CombatInterface.h"
 
 
+FString UAuraProjectileSpell::GetDescription(int32 Level)
+{
+	if (Level == 1)
+	{
+		return FString::Printf(TEXT("<Title>FIRE BOLT</>\n<Default>"));
+	}
+}
+
+FString UAuraProjectileSpell::GetNextLevelDescription(int32 Level)
+{
+	
+}
+
 void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                            const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo,
                                            const FGameplayEventData* TriggerEventData)
