@@ -28,3 +28,9 @@ FTaggedMontage UAuraDamagedGameplayAbility::GetRandomTagMontageFromArr(const TAr
 	const int32 Selection = FMath::RandRange(0, TaggedMontages.Num() - 1);
 	return  TaggedMontages[Selection];
 }
+
+float UAuraDamagedGameplayAbility::GetDamageByDamageType(float InLevel, const FGameplayTag& DamageType)
+{
+	checkf(DamageTypesMap.Contains(DamageType), TEXT("Gameplay Ability [%s] is not contain damage type [%s]"),*GetNameSafe(this),*DamageType.ToString())
+	return DamageTypesMap[DamageType].GetValueAtLevel(InLevel);
+}
