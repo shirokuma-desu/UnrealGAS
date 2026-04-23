@@ -43,7 +43,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FSpellGlobeSelectedSignature SpellGlobeSelectedDelegate;
 	
-	
+	UFUNCTION(BlueprintCallable)
+	void GlobeDeselect();
 	
 private:
 	static void ShouldEnableButton(const FGameplayTag& AbilityStatus, int32 SpellPoints, 
