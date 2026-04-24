@@ -12,6 +12,7 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTagsDelegate, const FGameplayTag
 DECLARE_MULTICAST_DELEGATE(FAbilityGiven);	
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Tag*/,int32 /*AbilityLevel*/)
+DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Status*/, const FGameplayTag&/*Slot*/, const FGameplayTag& /*PrevSlot*/ );
 
 /**
  * 
@@ -34,11 +35,20 @@ public:
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
 	bool GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLevelDescription);
+	FGameplayTag GetStatusFromAbilityTag(const FGameplayTag& AbilityTag);
+	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& AbilityTag);
+	void ClearSlot( FGameplayAbilitySpec* AbilitySpec);
+	void ClearAbilityOfSlot(const FGameplayTag& Slot);
+	static bool AbilityHasSlot(FGameplayAbilitySpec* Spec,const FGameplayTag& Slot);
 	
 	UFUNCTION(Server,Reliable)
 	void ROS_UpgradeAttribute(const FGameplayTag& AttributeTag);
 	UFUNCTION(Server,Reliable)
 	void ROS_SpendSpellPoints(const FGameplayTag& AbilityTag);
+	UFUNCTION(Server,Reliable)
+	void ROS_EquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Slot);
+	UFUNCTION(Client, Reliable)
+	void ROC_EquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PrevSlot);
 	
 	void UpdateAbilityStatus(int32 Level);
 	
@@ -46,6 +56,7 @@ public:
 	FEffectAssetTagsDelegate OnEffectAssetTagsHandler;
 	FAbilityGiven OnAbilityGivenHandler;
 	FAbilityStatusChanged OnAbilityStatusChangedHandler;
+	FAbilityEquipped AbilityEquipped;
 	
 	bool bStartupAbilityGiven = false;
 	
