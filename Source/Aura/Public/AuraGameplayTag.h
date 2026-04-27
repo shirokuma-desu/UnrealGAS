@@ -54,10 +54,16 @@ public:
 	
 	FGameplayTag Damage;
 	FGameplayTag HitReact;
+	
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lighting;
 	FGameplayTag Damage_Arcane;
 	FGameplayTag Damage_Physical;
+	
+	FGameplayTag Debuff_Burn;
+	FGameplayTag Debuff_Stun;
+	FGameplayTag Debuff_Arcane;
+	FGameplayTag Debuff_Physical;
 	
 	FGameplayTag Ability_Attack;
 	FGameplayTag Ability_Summon;
@@ -94,6 +100,7 @@ public:
 	
 	
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistance;
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuff;
 	
 	
 private:

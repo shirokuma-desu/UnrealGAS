@@ -23,11 +23,15 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<UGameplayEffect> DamageEffectClass;
 	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category= "Damage")
-	TMap<FGameplayTag, FScalableFloat> DamageTypesMap;
+	UPROPERTY(EditDefaultsOnly, Category="Damage")
+	FGameplayTag DamageType;
+	
+	UPROPERTY(EditDefaultsOnly, Category="Damage")
+	FScalableFloat Damage;
+	
+	
 	
 	UFUNCTION(BlueprintPure)
 	FTaggedMontage GetRandomTagMontageFromArr(const TArray<FTaggedMontage>& TaggedMontages) const;
 	
-	float GetDamageByDamageType(float InLevel,const FGameplayTag& DamageType);
 };

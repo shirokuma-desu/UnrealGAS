@@ -91,6 +91,14 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Physical,GameplayTag.Attributes_Resistance_Physical);
 	GameplayTag.DamageTypesToResistance.Add(GameplayTag.Damage_Arcane,GameplayTag.Attributes_Resistance_Arcane);
 	
+	
+	// Map of damage type to debuff
+	
+	GameplayTag.DamageTypesToDebuff.Add(GameplayTag.Damage_Fire,GameplayTag.Debuff_Burn);
+	GameplayTag.DamageTypesToDebuff.Add(GameplayTag.Damage_Lighting,GameplayTag.Debuff_Stun);
+	GameplayTag.DamageTypesToDebuff.Add(GameplayTag.Damage_Physical,GameplayTag.Debuff_Physical);
+	GameplayTag.DamageTypesToDebuff.Add(GameplayTag.Damage_Arcane,GameplayTag.Debuff_Arcane);
+	
 	//Combat Socket
 	GameplayTag.CombatSocket_Weapon = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("CombatSocket.Weapon"),
 	FString("Weapon"));
@@ -153,5 +161,16 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	GameplayTag.Attributes_Meta_IncomingXP = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Attributes.Meta.IncomingXP"),
 		FString("Incoming XP Meta Attributes"));
 	
+	//Debuff
+	GameplayTag.Debuff_Arcane = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Arcane"),
+		FString("Debuff for Arcane"));
+	GameplayTag.Debuff_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Burn"),
+		FString("Debuff for burn"));
+	GameplayTag.Debuff_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Physical"),
+		FString("Debuff Physical"));
+	GameplayTag.Debuff_Stun = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Stun"),
+		FString("Debuff Stun"));
 }
+	
+	
 

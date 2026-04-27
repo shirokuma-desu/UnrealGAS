@@ -64,12 +64,10 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetVector, const FG
 		
 		FAuraGameplayTag GameplayTags = FAuraGameplayTag::Get();
 		
-		for (auto& Pair : DamageTypesMap)
-		{
-			const float ScaledDamage = Pair.Value.GetValueAtLevel(GetAbilityLevel());
-			UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,Pair.Key,ScaledDamage);
-		}
-	
+		
+		const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+		UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,DamageType,ScaledDamage);
+		
 		Projectile->GE_Damage_SpecHandle = SpecHandle;
 		Projectile->FinishSpawning(SpawnTransform);
 	}
