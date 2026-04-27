@@ -170,6 +170,17 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 		FString("Debuff Physical"));
 	GameplayTag.Debuff_Stun = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Stun"),
 		FString("Debuff Stun"));
+	
+	//Debuff Stats 
+	GameplayTag.Debuff_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Damage"),
+		FString("Debuff Damage"));
+	GameplayTag.Debuff_Chance = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Chance"),
+		FString("Debuff Chance"));
+	GameplayTag.Debuff_Duration = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Debuff.Duration"),
+		FString("Debuff Duration"));
+	GameplayTag.Debuff_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag("Debuff.Frequency",
+		FString("Debuff Frequency"));
+	
 }
 	
 	
