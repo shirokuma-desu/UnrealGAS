@@ -47,38 +47,36 @@ void AAuraProjectile::Destroyed()
 {
 	if (!bHit && !HasAuthority())
 	{
-		UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
-		if (HissSFXComponent != nullptr)
-		{
-		HissSFXComponent->Stop();
-			bHit = true;
-		}
+		OnHit();
 	}
 	Super::Destroyed();
+}
+
+void AAuraProjectile::OnHit()
+{
+	UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
+	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
+	if (HissSFXComponent) HissSFXComponent->Stop();
+	bHit = true;
 }
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                       UPrimitiveComponent* OtherComp, int32 Otherbodyindex, bool bfromsweep, const FHitResult& SweepResult)
 {
 	
-	if (!GE_Damage_SpecHandle.IsValid() || GE_Damage_SpecHandle.Data.Get()->GetContext().GetEffectCauser() ==  OtherActor)
-	{
-		return;
-	}
-	if (!UAuraAbilitySystemBPLibrary::IsNotFriend(GE_Damage_SpecHandle.Data.Get()->GetContext().GetEffectCauser(),OtherActor)) return;
-	if (!bHit)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
-		if (HissSFXComponent) HissSFXComponent->Stop();
-		bHit = true;
-	}
+	 AActor* SourceAvatarActor = DamageEffectParams.SourceAbilitySystemComponent->GetAvatarActor();
+	
+	if (SourceAvatarActor ==  OtherActor) return;
+	if (!UAuraAbilitySystemBPLibrary::IsNotFriend(SourceAvatarActor,OtherActor)) return;
+	
+	if (!bHit) OnHit();
+	
 	if (HasAuthority())
 	{
 		if(auto TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
 		{
-			TargetASC->ApplyGameplayEffectSpecToSelf(*GE_Damage_SpecHandle.Data.Get());
+			DamageEffectParams.TargetAbilitySystemComponent = TargetASC;
+			UAuraAbilitySystemBPLibrary::ApplyDamageEffect(DamageEffectParams);
 		}
 		
 		Destroy();
