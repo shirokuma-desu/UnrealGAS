@@ -6,7 +6,6 @@
 #include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/AbilityInfo.h"
-#include "AbilitySystem/Data/DA_AttributeInfo.h"
 #include "Player/MyPlayerState.h"
 
 void USpellMenuWidgetController::BroadcastInitialValues()

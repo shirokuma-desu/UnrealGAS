@@ -43,9 +43,19 @@ public:
 	
 	bool IsCriticalHit() const {return bIsCriticalHit;}
 	bool IsBlockHit() const {return bIsBlock;}
+	bool IsSuccessfulDebuff() const { return bIsSuccessfulDebuff;}
+	float GetDebuffDamage() const { return  DebuffDamage;}
+	float GetDebuffDuration()const { return  DebuffDuration;}
+	float GetDebuffFrequency() const {return  DebuffFrequency;}
+	TSharedPtr<FGameplayTag> GetDamageType() const {return  DamageType;}
+	
 	
 	void SetCriticalHit(bool IsCritical) { bIsCriticalHit = IsCritical; }
 	void SetBlockHit(bool IsBlock) { bIsBlock = IsBlock; }
+	void SetSuccessfulDebuff(bool bInIsDebuff) {bIsSuccessfulDebuff = bInIsDebuff;}
+	void SetDebuffDamage(float InDebuffDamage) { DebuffDamage = InDebuffDamage;}
+	void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency;}
+	void SetDebuffDuration(float InDebuffDuration) {DebuffDuration = InDebuffDuration;}
 	
 	virtual  UScriptStruct* GetScriptStruct() const override;
 	virtual  bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
@@ -60,6 +70,19 @@ protected:
 	bool bIsCriticalHit = false;
 	UPROPERTY()
 	uint32 RepBits = 0;
+	
+	UPROPERTY()
+	bool bIsSuccessfulDebuff = false;
+	UPROPERTY()
+	float DebuffDamage= 0.f;
+	UPROPERTY()
+	float DebuffDuration = 0.f;
+	UPROPERTY()
+	float DebuffFrequency = 0.f;
+	
+	
+	TSharedPtr<FGameplayTag> DamageType;
+	
 };
 
 template<>
