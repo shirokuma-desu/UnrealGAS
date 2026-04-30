@@ -84,6 +84,16 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 			const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;
 			if (bDebuff)
 			{
+				FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
+				UAuraAbilitySystemBPLibrary::SetIsSuccessfulDebuff(ContextHandle,true);
+				UAuraAbilitySystemBPLibrary::SetDamageType(ContextHandle,DamageType);
+				const float DebuffDamage = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Damage, false, -1.f );
+				const float DebuffDuration = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Duration, false, -1.f );
+				const float DebuffFrequency = Spec.GetSetByCallerMagnitude(GameplayTags.Debuff_Frequency, false, -1.f );
+				
+				UAuraAbilitySystemBPLibrary::SetDamageDebuff(ContextHandle,DebuffDamage);
+				UAuraAbilitySystemBPLibrary::SetDebuffDuration(ContextHandle,DebuffDuration);
+				UAuraAbilitySystemBPLibrary::SetDamageDebuff(ContextHandle,DebuffFrequency);
 				
 			}
 		}

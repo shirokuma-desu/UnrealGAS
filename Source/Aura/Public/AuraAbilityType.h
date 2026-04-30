@@ -56,7 +56,7 @@ public:
 	void SetDebuffDamage(float InDebuffDamage) { DebuffDamage = InDebuffDamage;}
 	void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency;}
 	void SetDebuffDuration(float InDebuffDuration) {DebuffDuration = InDebuffDuration;}
-	
+	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) {DamageType = InDamageType;}
 	virtual  UScriptStruct* GetScriptStruct() const override;
 	virtual  bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 	virtual FAuraGameplayEffectContext* Duplicate() const override;

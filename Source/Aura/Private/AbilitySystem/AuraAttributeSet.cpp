@@ -145,74 +145,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 	
 	if (Data.EvaluatedData.Attribute == GetIncommingDamageAttribute())
 	{
-		const float LocalIncomingDamage = GetIncommingDamage();
-		SetIncommingDamage(0.f);
-		
-		if (LocalIncomingDamage > 0.f)
-		{
-			const float NewHealth = GetHealth() - LocalIncomingDamage;
-			SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
-			const bool bFatal = NewHealth <=0;
-			
-			if (bFatal)
-			{
-				if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
-				{
-					CombatInterface->Die();
-				}
-				SendXP(Props);
-			}
-			else
-			{
-				FGameplayTagContainer TagContainer;
-				TagContainer.AddTag(FAuraGameplayTag::Get().HitReact);
-				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
-			}
-		}
-		
-		
-		const bool bBlockHit = UAuraAbilitySystemBPLibrary::IsBlockHit(Props.EffectContextHandle);
-		const bool bCriticalHit= UAuraAbilitySystemBPLibrary::IsCriticalHit(Props.EffectContextHandle);
-		
-		ShowFloatingText(Props,LocalIncomingDamage,bBlockHit,bCriticalHit);
+		HandleIncomingDamage(Props);
 		
 	}
 	if (Data.EvaluatedData.Attribute == GetIncomingXPAttribute())
 	{
-		const float LocalIncomingXP = GetIncomingXP(); 
-		UE_LOG(LogAura,Log,TEXT("Incoming XP %f"),LocalIncomingXP);
-		SetIncomingXP(0);
-		
-		//todo : see if we should levelup
-		
-		//source character is the owner, since GA_ListenForEvent applies GE_EventBasedEffect, adding to Incoming XP
-		if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.TargetCharacter->Implements<UCombatInterface>())
-		{
-			const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
-			const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
-			
-			const int32 NewLevel =IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter,CurrentXP + LocalIncomingXP);
-			const int32 NumLevelUps = NewLevel - CurrentLevel;
-			if (NumLevelUps > 0)
-			{
-				//TO DO: Get AttributePointsReward and Spell Reward
-				//Add To playerlevel
-				//Add to AttributePoint and Spell Points
-				//Fill up health and mana
-				const int32 AttributePointReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter,CurrentLevel);
-				const int32 SpellPointReward = IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter,CurrentLevel);
-				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
-				IPlayerInterface::Execute_AddToAttributePoint(Props.SourceCharacter, AttributePointReward);
-				IPlayerInterface::Execute_AddToSpellPoint(Props.SourceCharacter, SpellPointReward);
-				
-				bTopOffHealth = true;
-				bTopOffMana = true;
-				
-				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
-			}
-			
-			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter,LocalIncomingXP);
-		}
+		HandleIncomingXP(Props);
 	}
 	
 }
@@ -265,6 +203,88 @@ void UAuraAttributeSet::SendXP(const FEffectProperties& Props)
 		
 		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter,GameplayTag.Attributes_Meta_IncomingXP,Payload);
 	}
+}
+
+void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
+{
+	const float LocalIncomingDamage = GetIncommingDamage();
+	SetIncommingDamage(0.f);
+		
+	if (LocalIncomingDamage > 0.f)
+	{
+		const float NewHealth = GetHealth() - LocalIncomingDamage;
+		SetHealth(FMath::Clamp(NewHealth,0.f,GetMaxHealth()));
+		const bool bFatal = NewHealth <=0;
+			
+		if (bFatal)
+		{
+			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
+			{
+				CombatInterface->Die();
+			}
+			SendXP(Props);
+		}
+		else
+		{
+			FGameplayTagContainer TagContainer;
+			TagContainer.AddTag(FAuraGameplayTag::Get().HitReact);
+			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+		}
+	}
+		
+		
+	const bool bBlockHit = UAuraAbilitySystemBPLibrary::IsBlockHit(Props.EffectContextHandle);
+	const bool bCriticalHit= UAuraAbilitySystemBPLibrary::IsCriticalHit(Props.EffectContextHandle);
+		
+	ShowFloatingText(Props,LocalIncomingDamage,bBlockHit,bCriticalHit);
+	if (UAuraAbilitySystemBPLibrary::IsSuccessfulDebuff(Props.EffectContextHandle))
+	{
+		//Handle Debuff
+		Debuff(Props);
+	}
+}
+
+void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
+{
+	const float LocalIncomingXP = GetIncomingXP(); 
+	UE_LOG(LogAura,Log,TEXT("Incoming XP %f"),LocalIncomingXP);
+	SetIncomingXP(0);
+		
+	//todo : see if we should levelup
+		
+	//source character is the owner, since GA_ListenForEvent applies GE_EventBasedEffect, adding to Incoming XP
+	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.TargetCharacter->Implements<UCombatInterface>())
+	{
+		const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+		const int32 CurrentXP = IPlayerInterface::Execute_GetXP(Props.SourceCharacter);
+			
+		const int32 NewLevel =IPlayerInterface::Execute_FindLevelForXP(Props.SourceCharacter,CurrentXP + LocalIncomingXP);
+		const int32 NumLevelUps = NewLevel - CurrentLevel;
+		if (NumLevelUps > 0)
+		{
+			//TO DO: Get AttributePointsReward and Spell Reward
+			//Add To playerlevel
+			//Add to AttributePoint and Spell Points
+			//Fill up health and mana
+			const int32 AttributePointReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter,CurrentLevel);
+			const int32 SpellPointReward = IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter,CurrentLevel);
+			IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+			IPlayerInterface::Execute_AddToAttributePoint(Props.SourceCharacter, AttributePointReward);
+			IPlayerInterface::Execute_AddToSpellPoint(Props.SourceCharacter, SpellPointReward);
+				
+			bTopOffHealth = true;
+			bTopOffMana = true;
+				
+			IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+		}
+			
+		IPlayerInterface::Execute_AddToXP(Props.SourceCharacter,LocalIncomingXP);
+	}
+}
+
+void UAuraAttributeSet::Debuff(FEffectProperties& Props)
+{
+	
 }
 
 

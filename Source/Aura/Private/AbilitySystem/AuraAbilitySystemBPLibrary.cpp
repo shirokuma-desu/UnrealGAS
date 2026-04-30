@@ -228,9 +228,55 @@ void UAuraAbilitySystemBPLibrary::SetIsCriticalHit(FGameplayEffectContextHandle&
 	}
 }
 
+void UAuraAbilitySystemBPLibrary::SetIsSuccessfulDebuff(FGameplayEffectContextHandle& EffectContextHandle,
+	bool IsSuccessfulDebuff)
+{
+	if ( FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->SetSuccessfulDebuff(IsSuccessfulDebuff);
+	}
+}
+
+void UAuraAbilitySystemBPLibrary::SetDamageDebuff(FGameplayEffectContextHandle& EffectContextHandle,
+	float InDamageDebuff)
+{
+	if ( FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->SetDebuffDamage(InDamageDebuff);
+	}
+}
+
+void UAuraAbilitySystemBPLibrary::SetDebuffDuration(FGameplayEffectContextHandle& EffectContextHandle,
+	float InDebuffDuration)
+{
+	if ( FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->SetDebuffDuration(InDebuffDuration);
+	}
+}
+
+void UAuraAbilitySystemBPLibrary::SetDebuffFrequency(FGameplayEffectContextHandle& EffectContextHandle,
+	float InDebuffFrequency)
+{
+	if ( FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->SetDebuffFrequency(InDebuffFrequency);
+	}
+}
+
+void UAuraAbilitySystemBPLibrary::SetDamageType(FGameplayEffectContextHandle& EffectContextHandle,
+	const FGameplayTag& InDamageType)
+{
+	if ( FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		const TSharedPtr<FGameplayTag> DamageType = MakeShared<FGameplayTag>(InDamageType);
+		return AuraGameplayEffectContext->SetDamageType(DamageType);
+	}
+}
+
 void UAuraAbilitySystemBPLibrary::GetLivePlayerWithinRadius(const UObject* WorldContextObject,
-	TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorToIgnore, float Radius,
-	const FVector& SphereOrigin)
+                                                            TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorToIgnore, float Radius,
+                                                            const FVector& SphereOrigin)
 {
 	FCollisionQueryParams SphereQueryParams;
 	SphereQueryParams.AddIgnoredActors(ActorToIgnore);
