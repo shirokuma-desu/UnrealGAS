@@ -81,7 +81,7 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(InTagToDefs[ResistanceTag], EvaluateParameters, TargetDebuffResistance);
 			TargetDebuffResistance = FMath::Max<float>(TargetDebuffResistance,0.f);
 			const float EffectiveDebuffChance = SourceDebuffChance * ( 100  - TargetDebuffResistance) / 100.f;
-			const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;
+			const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;	
 			if (bDebuff)
 			{
 				FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
@@ -93,7 +93,7 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 				
 				UAuraAbilitySystemBPLibrary::SetDamageDebuff(ContextHandle,DebuffDamage);
 				UAuraAbilitySystemBPLibrary::SetDebuffDuration(ContextHandle,DebuffDuration);
-				UAuraAbilitySystemBPLibrary::SetDamageDebuff(ContextHandle,DebuffFrequency);
+				UAuraAbilitySystemBPLibrary::SetDebuffFrequency(ContextHandle,DebuffFrequency);
 				
 			}
 		}
