@@ -36,6 +36,8 @@ struct FDamageEffectParams
 	float DebuffDuration = 0.f;
 	UPROPERTY()
 	float DeathImpulseMagnitude = 0.f;
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 	
 };
 
@@ -54,6 +56,7 @@ public:
 	float GetDebuffDuration()const { return  DebuffDuration;}
 	float GetDebuffFrequency() const {return  DebuffFrequency;}
 	TSharedPtr<FGameplayTag> GetDamageType() const {return  DamageType;}
+	FVector GetDeathImpulse() const {return DeathImpulse;}
 	
 	
 	void SetCriticalHit(bool IsCritical) { bIsCriticalHit = IsCritical; }
@@ -63,6 +66,8 @@ public:
 	void SetDebuffFrequency(float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency;}
 	void SetDebuffDuration(float InDebuffDuration) {DebuffDuration = InDebuffDuration;}
 	void SetDamageType(TSharedPtr<FGameplayTag> InDamageType) {DamageType = InDamageType;}
+	void SetDeathImpulse(const FVector& InImpulse) { DeathImpulse = InImpulse;}
+	
 	virtual  UScriptStruct* GetScriptStruct() const override;
 	virtual  bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess) override;
 	virtual FAuraGameplayEffectContext* Duplicate() const override;
@@ -88,6 +93,9 @@ protected:
 	
 	
 	TSharedPtr<FGameplayTag> DamageType;
+	
+	UPROPERTY()
+	FVector DeathImpulse = FVector::ZeroVector;
 	
 };
 
