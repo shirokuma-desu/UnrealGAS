@@ -11,6 +11,7 @@
 #include "Interfaces/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UDebuffNiagaraComponent;
 class UAuraGameplayAbility;
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -42,7 +43,8 @@ public:
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
-	
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDead GetOnDeadDelegate() override;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual  void MC_HandleDeath();
 	
@@ -50,6 +52,9 @@ public:
 	TArray<FTaggedMontage> AttackMontages;
 	
 	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
+	
+	FOnASCRegistered OnASCRegistered;
+	FOnDead OnDead;
 protected:
 	
 	
@@ -104,6 +109,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
 	TObjectPtr<UMaterialInstance> DissolveMaterialInstanceWeapon;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 	
 	bool bDead = false;
 	
