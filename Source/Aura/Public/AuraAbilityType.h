@@ -20,16 +20,22 @@ struct FDamageEffectParams
 	
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> TargetAbilitySystemComponent = nullptr;
-
+	UPROPERTY()
 	float BaseDamage = 0.0f;
+	UPROPERTY()
 	float AbilityLevel = 1.f;
-	
+	UPROPERTY()
 	FGameplayTag DamagedType = FGameplayTag();
-	
+	UPROPERTY()
 	float DebuffChance = 0.f;
+	UPROPERTY()
 	float DebuffDamage = 0.f;
+	UPROPERTY()
 	float DebuffFrequency = 0.f;
+	UPROPERTY()
 	float DebuffDuration = 0.f;
+	UPROPERTY()
+	float DeathImpulseMagnitude = 0.f;
 	
 };
 
