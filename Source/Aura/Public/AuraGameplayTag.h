@@ -53,7 +53,6 @@ public:
 	
 	
 	FGameplayTag Damage;
-	FGameplayTag HitReact;
 	
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lighting;
@@ -102,7 +101,7 @@ public:
 	FGameplayTag Montage_Attack_3;
 	FGameplayTag Montage_Attack_4;
 	
-	
+	FGameplayTag Effects_HitReact;
 	
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistance;
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuff;

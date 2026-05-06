@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/AuraAttributeSet.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraAbilityType.h"
 #include "AuraGameplayTag.h"
@@ -232,14 +231,14 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			//to do use death impulse
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
 			{
-				CombatInterface->Die();
+				CombatInterface->Die(UAuraAbilitySystemBPLibrary::GetDeathImpulse(Props.EffectContextHandle));
 			}
 			SendXP(Props);
 		}
 		else
 		{
 			FGameplayTagContainer TagContainer;
-			TagContainer.AddTag(FAuraGameplayTag::Get().HitReact);
+			TagContainer.AddTag(FAuraGameplayTag::Get().Effects_HitReact);
 			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 		}
 	}
@@ -309,15 +308,16 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	
 	FString DebuffName = FString::Printf(TEXT("Dynamic Debuff _%s"), *DamageType.ToString());
 	UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(),FName(DebuffName));
-	
+	//UGameplayEffect* Effect = NewObject<UGameplayEffect>(GetTransientPackage(), UGameplayEffect::StaticClass(), FName(DebuffName), RF_NoFlags, UGameplayEffect::StaticClass()->GetDefaultObject());
 	Effect->DurationPolicy = EGameplayEffectDurationType::HasDuration;
 	Effect->Period = DebuffFrequency;
 	Effect->DurationMagnitude = FScalableFloat(DebuffDuration);
 	
-	FInheritedTagContainer InheritedTags;
-	InheritedTags.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
-	UTargetTagsGameplayEffectComponent& Component = Effect->AddComponent<UTargetTagsGameplayEffectComponent>();
-	Component.SetAndApplyTargetTagChanges(InheritedTags);
+	FInheritedTagContainer TagContainer = FInheritedTagContainer();
+	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
+	TagContainer.Added.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
+	TagContainer.CombinedTags.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
+	Component.SetAndApplyTargetTagChanges(TagContainer);
 	//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
 	
 	Effect->StackingType = EGameplayEffectStackingType::AggregateBySource;

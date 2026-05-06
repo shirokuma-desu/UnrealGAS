@@ -72,7 +72,7 @@ void AEnemy::BeginPlay()
 			OnHealthChange.Broadcast(AuraAS->GetHealth());
 			OnMaxHealthChange.Broadcast(AuraAS->GetMaxHealth());
 	}
-	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTag::Get().HitReact,EGameplayTagEventType::NewOrRemoved).AddUObject(
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTag::Get().Effects_HitReact,EGameplayTagEventType::NewOrRemoved).AddUObject(
 	this,
 	&AEnemy::HitReactTagChanged
 	);
@@ -120,7 +120,7 @@ int32 AEnemy::GetPlayerLevel_Implementation()
 	return Level;
 }
 
-void AEnemy::Die()
+void AEnemy::Die(const FVector& DeathImpulse)
 {
 	SetLifeSpan(LifeSpan);
 	if (AuraAIController)
@@ -128,7 +128,7 @@ void AEnemy::Die()
 	AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"),true);
 		
 	}
-	Super::Die();
+	Super::Die(DeathImpulse);
 }
 
 void AEnemy::PossessedBy(AController* NewController)

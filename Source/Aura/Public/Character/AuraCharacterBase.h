@@ -32,7 +32,7 @@ public:
 	
 	//combat interface
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
-	virtual void Die() override;
+	virtual void Die(const FVector& DeathImpulse) override;
 	virtual	void BeginPlay() override;
 	virtual void InitAbilityActorInfo();
 	virtual FVector GetCombatSocketLocation_Implementation(const FGameplayTag& MontageTag) override;
@@ -46,7 +46,7 @@ public:
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
 	virtual FOnDead GetOnDeadDelegate() override;
 	UFUNCTION(NetMulticast, Reliable)
-	virtual  void MC_HandleDeath();
+	virtual  void MC_HandleDeath(const FVector& DeathImpulse);
 	
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;

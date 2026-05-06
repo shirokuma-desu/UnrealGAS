@@ -61,8 +61,6 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	
 	GameplayTag.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Damage"),
 		FString("Damage"));
-	GameplayTag.HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(FName("Effects.HitReact"),
-		FString("HitReact"));
 	
 	//Damage Types	
 	
@@ -181,6 +179,11 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	GameplayTag.Debuff_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag("Debuff.Frequency",
 		FString("Debuff Frequency"));
 	
+	
+	GameplayTag.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Effects.HitReact"),
+		FString("Tag granted when Hit Reacting")
+		);
 }
 	
 	
