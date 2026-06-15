@@ -214,6 +214,18 @@ FVector UAuraAbilitySystemBPLibrary::GetDeathImpulse(const FGameplayEffectContex
 	return  FVector::ZeroVector;
 }
 
+FVector UAuraAbilitySystemBPLibrary::GetKnockbackForce(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		if (AuraGameplayEffectContext->GetDamageType().IsValid())
+		{
+			return AuraGameplayEffectContext->GetKnockbackForce();
+		}
+	}
+	return  FVector::ZeroVector;
+}
+
 bool UAuraAbilitySystemBPLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
 	if (const FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -295,6 +307,15 @@ void UAuraAbilitySystemBPLibrary::SetDeathImpulse(FGameplayEffectContextHandle& 
 	}
 }
 
+void UAuraAbilitySystemBPLibrary::SetKnockbackForce(FGameplayEffectContextHandle& EffectContextHandle,
+	const FVector& InImpulse)
+{
+	if ( FAuraGameplayEffectContext* AuraGameplayEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		return AuraGameplayEffectContext->SetKnockBackForce(InImpulse);
+	}
+}
+
 void UAuraAbilitySystemBPLibrary::GetLivePlayerWithinRadius(const UObject* WorldContextObject,
                                                             TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorToIgnore, float Radius,
                                                             const FVector& SphereOrigin)
@@ -340,6 +361,7 @@ FGameplayEffectContextHandle UAuraAbilitySystemBPLibrary::ApplyDamageEffect(
 	FGameplayEffectContextHandle EffectContextHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(SourceAvatarActor);
 	SetDeathImpulse(EffectContextHandle, DamageEffectParams.DeathImpulse);
+	SetKnockbackForce(EffectContextHandle, DamageEffectParams.KnockbackForce);
 	FGameplayEffectSpecHandle SpecHandle = DamageEffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(DamageEffectParams.DamagedGameplayEffectClass,DamageEffectParams.AbilityLevel,EffectContextHandle);
 	
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle,DamageEffectParams.DamagedType,DamageEffectParams.BaseDamage);

@@ -240,6 +240,12 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			FGameplayTagContainer TagContainer;
 			TagContainer.AddTag(FAuraGameplayTag::Get().Effects_HitReact);
 			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			const FVector& KnockbackForce = UAuraAbilitySystemBPLibrary::GetKnockbackForce(Props.EffectContextHandle);
+			if (!KnockbackForce.IsNearlyZero(1.f))
+			{
+				Props.TargetCharacter->LaunchCharacter(KnockbackForce,true, true);
+			}
+			
 		}
 	}
 		
@@ -258,8 +264,7 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 {
 	const float LocalIncomingXP = GetIncomingXP(); 
-	UE_LOG(LogAura,Log,TEXT("Incoming XP %f"),LocalIncomingXP);
-	SetIncomingXP(0);
+	SetIncomingXP(0.f);
 		
 	//todo : see if we should levelup
 		
@@ -316,7 +321,7 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	FInheritedTagContainer TagContainer = FInheritedTagContainer();
 	UTargetTagsGameplayEffectComponent& Component = Effect->FindOrAddComponent<UTargetTagsGameplayEffectComponent>();
 	TagContainer.Added.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
-	TagContainer.CombinedTags.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
+	//TagContainer.CombinedTags.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
 	Component.SetAndApplyTargetTagChanges(TagContainer);
 	//Effect->InheritableOwnedTagsContainer.AddTag(GameplayTag.DamageTypesToDebuff[DamageType]);
 	

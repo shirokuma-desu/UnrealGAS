@@ -2,7 +2,6 @@
 
 
 #include "AbilitySystem/Abilities/AuraDamagedGameplayAbility.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "AuraAbilityType.h"
@@ -35,6 +34,19 @@ FDamageEffectParams UAuraDamagedGameplayAbility::MakeDamageEffectParamsFromClass
 	DamageEffectParams.DebuffFrequency = DebuffFrequency;
 	DamageEffectParams.DebuffDamage = DebuffDamage;
 	DamageEffectParams.DeathImpulseMagnitude = DeathImpulseMagnitude;
+	DamageEffectParams.KnockbackForceMagnitude = KnockbackForceMagnitude;
+	DamageEffectParams.KnockbackChance = KnockBackChance;
+	if (IsValid(TargetActor))
+	{
+		FRotator Rotation = (TargetActor->GetActorLocation() - GetAvatarActorFromActorInfo()->GetActorLocation()).Rotation();
+		Rotation.Pitch = 45.f;
+		const FVector ToTarget = Rotation.Vector();
+		DamageEffectParams.DeathImpulse = ToTarget * DeathImpulseMagnitude;
+		if (const bool bKnockback = FMath::RandRange(1,100) <= DamageEffectParams.KnockbackChance)
+		{
+			DamageEffectParams.KnockbackForce = ToTarget * KnockbackForceMagnitude;
+		}
+	}
 	return DamageEffectParams;
 }
 

@@ -73,6 +73,9 @@ class AURA_API UAuraAbilitySystemBPLibrary : public UBlueprintFunctionLibrary
 	static FVector GetDeathImpulse(const FGameplayEffectContextHandle& EffectContextHandle);
 	
 	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary| GameplayEffect")
+	static FVector GetKnockbackForce(const FGameplayEffectContextHandle& EffectContextHandle);
+	
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary| GameplayEffect")
 	static bool IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle);
 	
 	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary| GameplayEffect")
@@ -97,6 +100,9 @@ class AURA_API UAuraAbilitySystemBPLibrary : public UBlueprintFunctionLibrary
 	
 	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary| GameplayEffect")
 	static void SetDeathImpulse(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FVector& InImpulse);
+	
+	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary| GameplayEffect")
+	static void SetKnockbackForce(UPARAM(ref)FGameplayEffectContextHandle& EffectContextHandle, const FVector& InImpulse);
 	
 	UFUNCTION(BlueprintCallable, Category= " AuraAbiltySystemLibrary |Gameplay Mechanic")
 	static void GetLivePlayerWithinRadius (const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorToIgnore, float Radius, const FVector& SphereLocation);

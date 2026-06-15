@@ -81,7 +81,7 @@ void UExecCalc_Damage::DetermineDebuff(const FGameplayEffectCustomExecutionParam
 			ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(InTagToDefs[ResistanceTag], EvaluateParameters, TargetDebuffResistance);
 			TargetDebuffResistance = FMath::Max<float>(TargetDebuffResistance,0.f);
 			const float EffectiveDebuffChance = SourceDebuffChance * ( 100  - TargetDebuffResistance) / 100.f;
-			const bool bDebuff = FMath::RandRange(1, 100) < EffectiveDebuffChance;	
+			const bool bDebuff = FMath::RandRange(1, 100) <= EffectiveDebuffChance;	
 			if (bDebuff)
 			{
 				FGameplayEffectContextHandle ContextHandle = Spec.GetContext();
@@ -172,7 +172,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(DamageStatics().BlockChanceDef, EvaluateParameters, TargetBlockChance);
 	TargetBlockChance = FMath::Max<float>(TargetBlockChance, 0.0f);
 	
-	const bool bBlocked = FMath::RandRange(1,100) < TargetBlockChance;
+	const bool bBlocked = FMath::RandRange(1,100) <= TargetBlockChance;
 	
 	FGameplayEffectContextHandle EffectContextHandle = Spec.GetEffectContext();
 	UAuraAbilitySystemBPLibrary::SetIsBlockHit(EffectContextHandle,bBlocked);
@@ -219,7 +219,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	Damage*= (100 - EffectiveArmor * EffectiveArmorCoefficient) / 100.f;
 	
 	//Double damage plus a bonus if critical
-	const bool bCritical = FMath::RandRange(1,100) <  EffectiveCritHitChance;
+	const bool bCritical = FMath::RandRange(1,100) <=  EffectiveCritHitChance;
 	
 	UAuraAbilitySystemBPLibrary::SetIsCriticalHit(EffectContextHandle, bCritical);
 	
