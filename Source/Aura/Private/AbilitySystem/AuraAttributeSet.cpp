@@ -266,7 +266,7 @@ void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 	const float LocalIncomingXP = GetIncomingXP(); 
 	SetIncomingXP(0.f);
 		
-	//todo : see if we should levelup
+	//todo : see if we should level up
 		
 	//source character is the owner, since GA_ListenForEvent applies GE_EventBasedEffect, adding to Incoming XP
 	if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.TargetCharacter->Implements<UCombatInterface>())
@@ -279,7 +279,7 @@ void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 		if (NumLevelUps > 0)
 		{
 			//TO DO: Get AttributePointsReward and Spell Reward
-			//Add To playerlevel
+			//Add To player level
 			//Add to AttributePoint and Spell Points
 			//Fill up health and mana
 			const int32 AttributePointReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter,CurrentLevel);
@@ -333,17 +333,15 @@ void UAuraAttributeSet::Debuff(const FEffectProperties& Props)
 	
 	ModifierInfo.ModifierMagnitude = FScalableFloat(DebuffDamage);
 	ModifierInfo.ModifierOp = EGameplayModOp::Additive;
-	ModifierInfo.Attribute = UAuraAttributeSet::GetIncommingDamageAttribute();
+	ModifierInfo.Attribute = GetIncommingDamageAttribute();
 	
 	if (FGameplayEffectSpec* MutableSpec = new FGameplayEffectSpec(Effect, EffectContext, 1.f))
 	{
 		FAuraGameplayEffectContext* AuraContext = static_cast<FAuraGameplayEffectContext*>(MutableSpec->GetContext().Get());
 		TSharedPtr<FGameplayTag> DebuffDamageType = MakeShareable(new FGameplayTag(DamageType));
 		AuraContext->SetDamageType(DebuffDamageType);
-
 		Props.TargetASC->ApplyGameplayEffectSpecToSelf(*MutableSpec);
 	}
-	
 	
 }
 

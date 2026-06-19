@@ -147,7 +147,7 @@ void AAuraCharacterBase::IncrementMinionCount_Implementation(int32 Amount)
 	MinionCount+= Amount;
 }
 
-FOnASCRegistered AAuraCharacterBase::GetOnASCRegisteredDelegate()
+FOnASCRegistered& AAuraCharacterBase::GetOnASCRegisteredDelegate()
 {
 	return OnASCRegistered;
 }

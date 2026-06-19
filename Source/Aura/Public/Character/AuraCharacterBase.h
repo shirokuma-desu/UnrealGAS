@@ -43,7 +43,7 @@ public:
 	virtual FTaggedMontage GetTaggedMontageByTag_Implementation(const FGameplayTag& MontageTag) override;
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
-	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
 	virtual FOnDead GetOnDeadDelegate() override;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual  void MC_HandleDeath(const FVector& DeathImpulse);
