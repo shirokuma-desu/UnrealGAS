@@ -85,6 +85,11 @@ void AMyPlayerController::PlayerTick(float DeltaTime)
 
 void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTag::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
+	
 	const FVector2D InputAxisVector2D = InputActionValue.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
 	const FRotator YawRotator(0,Rotation.Yaw,0);
@@ -101,6 +106,15 @@ void AMyPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AMyPlayerController::CursorTrace()
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTag::Get().Player_Block_CursorTrace))
+	{
+		if (LastActor) LastActor->UnHighLightActor();
+		if (ThisActor) ThisActor->UnHighLightActor();
+		LastActor = nullptr;
+		ThisActor = nullptr;
+		return;
+	}
+	
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility,false,CursorHitResult);
 	if (!CursorHitResult.bBlockingHit) return;
 
@@ -134,6 +148,11 @@ void AMyPlayerController::AutoRun()
 
 void AMyPlayerController::AbilityInputPressed(FGameplayTag InputTag)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTag::Get().Player_Block_InputPressed))
+	{
+		return;
+	}
+	
 	if (InputTag.MatchesTagExact(FAuraGameplayTag::Get().InputTag_LMB))
 	{
 		IsTargeting = ThisActor ? true : false;
@@ -144,6 +163,10 @@ void AMyPlayerController::AbilityInputPressed(FGameplayTag InputTag)
 
 void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTag::Get().Player_Block_InputReleased))
+	{
+		return;
+	}
 	
 	if (!InputTag.MatchesTagExact(FAuraGameplayTag::Get().InputTag_LMB))
 	{
@@ -177,7 +200,10 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 					IsAutoRunning = true;
 				}
 			}
+			if (GetASC() && !GetASC()->HasMatchingGameplayTag(FAuraGameplayTag::Get().Player_Block_InputPressed))
+			{
 			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
+			}
 		}
 		FollowTime = 0.f;
 		IsTargeting = false;
@@ -187,6 +213,11 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 
 void AMyPlayerController::AbilityInputHeld(FGameplayTag InputTag)
 {
+	if (GetASC() && GetASC()->HasMatchingGameplayTag(FAuraGameplayTag::Get().Player_Block_InputHeld))
+	{
+		return;
+	}
+	
 	if (!InputTag.MatchesTagExact(FAuraGameplayTag::Get().InputTag_LMB))
 	{
 		if (GetASC())
