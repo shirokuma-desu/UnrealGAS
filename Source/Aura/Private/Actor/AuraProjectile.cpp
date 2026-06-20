@@ -45,6 +45,12 @@ void AAuraProjectile::BeginPlay()
 
 void AAuraProjectile::Destroyed()
 {
+	if (HissSFXComponent)
+	{
+		HissSFXComponent->Stop();
+		HissSFXComponent->DestroyComponent();
+	}
+	
 	if (!bHit && !HasAuthority())
 	{
 		OnHit();
@@ -56,7 +62,11 @@ void AAuraProjectile::OnHit()
 {
 	UGameplayStatics::PlaySoundAtLocation(this,ImpactSFX,GetActorLocation(),FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactVFX,GetActorLocation());
-	if (HissSFXComponent) HissSFXComponent->Stop();
+	if (HissSFXComponent)
+	{
+		HissSFXComponent->Stop();
+		HissSFXComponent->DestroyComponent();
+	}
 	bHit = true;
 }
 

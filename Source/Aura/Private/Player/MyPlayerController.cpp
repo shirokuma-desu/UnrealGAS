@@ -139,7 +139,7 @@ void AMyPlayerController::AbilityInputPressed(FGameplayTag InputTag)
 		IsTargeting = ThisActor ? true : false;
 		IsAutoRunning = false;
 	}
-	
+	if (GetASC()) GetASC()->AbilityInputPressed(InputTag);
 }
 
 void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
