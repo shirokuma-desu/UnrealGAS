@@ -7,6 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
+#include "NiagaraFunctionLibrary.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
 #include "GameFramework/Character.h"
@@ -176,6 +177,7 @@ void AMyPlayerController::AbilityInputReleased(FGameplayTag InputTag)
 					IsAutoRunning = true;
 				}
 			}
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickNiagaraSystem, CachedDestination);
 		}
 		FollowTime = 0.f;
 		IsTargeting = false;

@@ -7,6 +7,7 @@
 #include "GameplayTagContainer.h"
 #include "MyPlayerController.generated.h"
 
+class UNiagaraSystem;
 class UDamageTextComponent;
 class USplineComponent;
 class UAuraAbilitySystemComponent;
@@ -67,6 +68,9 @@ private:
 	
 	UPROPERTY()
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickNiagaraSystem;
 	
 	FHitResult CursorHitResult;
 	FVector CachedDestination = FVector::ZeroVector;
