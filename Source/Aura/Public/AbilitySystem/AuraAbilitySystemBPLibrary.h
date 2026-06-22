@@ -107,6 +107,9 @@ class AURA_API UAuraAbilitySystemBPLibrary : public UBlueprintFunctionLibrary
 	UFUNCTION(BlueprintCallable, Category= " AuraAbiltySystemLibrary |Gameplay Mechanic")
 	static void GetLivePlayerWithinRadius (const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, const TArray<AActor*>& ActorToIgnore, float Radius, const FVector& SphereLocation);
 	
+	UFUNCTION(BlueprintCallable,Category= " AuraAbiltySystemLibrary |Gameplay Mechanic")
+	static void GetClosestTargets(int32 MaxTarget, const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets, const FVector& Origin);
+	
 	UFUNCTION(BlueprintPure, Category= "AuraAbiltySystemLibrary|Gameplay Mechanic")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor); 
 	 
