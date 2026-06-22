@@ -22,7 +22,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void StoreOwnerVariables();
 	
-	
+	UFUNCTION(BlueprintCallable)
+	void TraceFirstTarget(const FVector& BeamTargetLocation);
 	
 protected:
 	
