@@ -47,6 +47,7 @@ public:
 	virtual FOnDead GetOnDeadDelegate() override;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual  void MC_HandleDeath(const FVector& DeathImpulse);
+	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;

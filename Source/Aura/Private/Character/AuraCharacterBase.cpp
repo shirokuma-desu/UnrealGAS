@@ -157,6 +157,11 @@ FOnDead AAuraCharacterBase::GetOnDeadDelegate()
 	return  OnDead;
 }
 
+USkeletalMeshComponent* AAuraCharacterBase::GetWeapon_Implementation()
+{
+	return WeaponMeshComponent;
+}
+
 ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
 {
 	return ECharacterClass;
