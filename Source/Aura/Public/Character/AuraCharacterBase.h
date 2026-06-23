@@ -44,7 +44,7 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void IncrementMinionCount_Implementation(int32 Amount) override;
 	virtual FOnASCRegistered& GetOnASCRegisteredDelegate() override;
-	virtual FOnDead GetOnDeadDelegate() override;
+	virtual FOnDead& GetOnDeadDelegate() override;
 	UFUNCTION(NetMulticast, Reliable)
 	virtual  void MC_HandleDeath(const FVector& DeathImpulse);
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
