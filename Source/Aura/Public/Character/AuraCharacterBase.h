@@ -62,8 +62,15 @@ public:
 	UPROPERTY(ReplicatedUsing=OnRep_Stunned, BlueprintReadOnly)
 	bool bIsStunned = false;
 	
+	
+	UPROPERTY(ReplicatedUsing=OnRep_Burnned, BlueprintReadOnly)
+	bool bIsBurn = false;
+	
 	UFUNCTION()
 	virtual void OnRep_Stunned();
+	
+	UFUNCTION()
+	virtual void OnRep_Burnned();
 	
 protected:
 	
@@ -124,6 +131,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> StunDebuffComponent;
 	
 	bool bDead = false;
 	

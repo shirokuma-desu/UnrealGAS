@@ -22,6 +22,7 @@ AAuraProjectile::AAuraProjectile()
 	
 	bReplicates = true;
 	
+	
 	SetRootComponent(SphereCollision);
 	SphereCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SphereCollision->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -33,6 +34,7 @@ AAuraProjectile::AAuraProjectile()
 	ProjectileMovementComponent->InitialSpeed = 550.f;
 	ProjectileMovementComponent->MaxSpeed = 550.f;
 	ProjectileMovementComponent->ProjectileGravityScale = 0.f;
+	
 }
 
 void AAuraProjectile::BeginPlay()
