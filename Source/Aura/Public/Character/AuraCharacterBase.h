@@ -50,6 +50,8 @@ public:
 	UFUNCTION(NetMulticast, Reliable)
 	virtual  void MC_HandleDeath(const FVector& DeathImpulse);
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
+	virtual bool IsBeingShocked_Implementation() const override;
+	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
 	
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;
@@ -62,9 +64,12 @@ public:
 	UPROPERTY(ReplicatedUsing=OnRep_Stunned, BlueprintReadOnly)
 	bool bIsStunned = false;
 	
-	
 	UPROPERTY(ReplicatedUsing=OnRep_Burnned, BlueprintReadOnly)
 	bool bIsBurn = false;
+	
+	UPROPERTY(Replicated, BlueprintReadOnly)
+	bool bIsBeingShocked = false;
+	
 	
 	UFUNCTION()
 	virtual void OnRep_Stunned();
