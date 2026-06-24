@@ -25,6 +25,8 @@ class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInte
 public:
 	
 	AAuraCharacterBase();
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	//* IAbilitySystemInterface *//
@@ -56,6 +58,13 @@ public:
 	
 	FOnASCRegistered OnASCRegistered;
 	FOnDead OnDead;
+	
+	UPROPERTY(ReplicatedUsing=OnRep_Stunned, BlueprintReadOnly)
+	bool bIsStunned = false;
+	
+	UFUNCTION()
+	virtual void OnRep_Stunned();
+	
 protected:
 	
 	
@@ -103,6 +112,8 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartDissolveTimelineWeapon(UMaterialInstanceDynamic* DynamicMaterialInstance);
 	
+	virtual void StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+	
 	/* Dissolve Effect*/
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly)
@@ -115,6 +126,9 @@ protected:
 	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 	
 	bool bDead = false;
+	
+	UPROPERTY(EditAnywhere, Category= "Combat")
+	float BaseWalkSpeed = 250.f;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Combat")
 	UNiagaraSystem* BloodEffect;

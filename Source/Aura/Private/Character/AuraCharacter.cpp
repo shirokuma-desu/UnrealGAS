@@ -3,6 +3,7 @@
 
 #include "Character/AuraCharacter.h"
 #include "AbilitySystemComponent.h"
+#include "AuraGameplayTag.h"
 #include "NiagaraComponent.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Data/LevelUpInfo.h"
@@ -39,6 +40,8 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	
+	BaseWalkSpeed = 600.f;
+	
 }
 
 
@@ -51,7 +54,8 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 	OnASCRegistered.Broadcast(AbilitySystemComponent);
-
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTag::Get().Debuff_Stun,EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AAuraCharacter::StunTagChanged);
+	
 	if (AMyPlayerController* MyPlayerController = Cast<AMyPlayerController>(GetController()))
 	{
 		if (AMyHUD* MyHUD = Cast<AMyHUD>(MyPlayerController->GetHUD()))
@@ -173,5 +177,28 @@ int32 AAuraCharacter::GetSpellPoints_Implementation() const
 	AMyPlayerState* MyPlayerState = GetPlayerState<AMyPlayerState>();
 	check(MyPlayerState);
 	return MyPlayerState->GetSpellPoints();
+}
+
+void AAuraCharacter::OnRep_Stunned()
+{
+	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
+	{
+		const FAuraGameplayTag GameplayTag = FAuraGameplayTag::Get();
+		FGameplayTagContainer BlockedTags;
+		BlockedTags.AddTag(GameplayTag.Player_Block_CursorTrace);
+		BlockedTags.AddTag(GameplayTag.Player_Block_InputHeld);
+		BlockedTags.AddTag(GameplayTag.Player_Block_InputPressed);
+		BlockedTags.AddTag(GameplayTag.Player_Block_InputReleased);
+		
+		if (bIsStunned)
+		{
+			AuraASC->AddLooseGameplayTags(BlockedTags);
+		}
+		else
+		{
+			AuraASC->RemoveLooseGameplayTags(BlockedTags);
+		}
+	}
+	
 }	
 

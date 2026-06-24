@@ -37,6 +37,8 @@ AEnemy::AEnemy()
 	GetCharacterMovement()->bUseControllerDesiredRotation = true;
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	
+	BaseWalkSpeed = 250.f;
 }
 
 void AEnemy::BeginPlay()
@@ -83,6 +85,7 @@ void AEnemy::InitAbilityActorInfo()
 {
 	AbilitySystemComponent->InitAbilityActorInfo(this,this);
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+	AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTag::Get().Debuff_Stun,EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AEnemy::StunTagChanged);
 	if (HasAuthority())
 	{
 		InitializeDefaultAttributes();
@@ -93,6 +96,15 @@ void AEnemy::InitAbilityActorInfo()
 void AEnemy::InitializeDefaultAttributes() const
 {
 	UAuraAbilitySystemBPLibrary::InitializeDefaultAttributes(this,ECharacterClass,Level,AbilitySystemComponent);
+}
+
+void AEnemy::StunTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	Super::StunTagChanged(CallbackTag, NewCount);
+	if (AuraAIController && AuraAIController->GetBlackboardComponent())
+	{
+		AuraAIController->GetBlackboardComponent()->SetValueAsBool(FName("Stun"),bIsStunned);
+	}
 }
 
 void AEnemy::HighLightActor()
