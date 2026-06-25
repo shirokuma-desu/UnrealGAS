@@ -352,6 +352,7 @@ void UAuraAbilitySystemComponent::ROS_EquipAbility_Implementation(const FGamepla
 					
 					if (IsPassiveAbility(*SpecWithSlot))
 					{
+						MC_ActivatePassiveEffect(GetAbilityTagFromSpec(*SpecWithSlot),false);
 						DeactivatePassiveAbility.Broadcast(GetAbilityTagFromSpec(*SpecWithSlot));
 					}
 					
@@ -363,8 +364,10 @@ void UAuraAbilitySystemComponent::ROS_EquipAbility_Implementation(const FGamepla
 			{
 				if (IsPassiveAbility(*AbilitySpec))
 				{
+					
 					TryActivateAbility(AbilitySpec->Handle);
-				}
+					MC_ActivatePassiveEffect(AbilityTag,true);
+				} 
 			}
 			
 			AssignSlotToAbility(*AbilitySpec,Slot);
@@ -378,6 +381,12 @@ void UAuraAbilitySystemComponent::ROC_EquipAbility_Implementation(const FGamepla
 	const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PrevSlot)
 {
 	AbilityEquipped.Broadcast(AbilityTag,Status,Slot,PrevSlot);
+}
+
+void UAuraAbilitySystemComponent::MC_ActivatePassiveEffect_Implementation(const FGameplayTag& AbilityTag,
+	bool bActivate)
+{
+	ActivatePassiveEffect.Broadcast(AbilityTag,bActivate);
 }
 
 void UAuraAbilitySystemComponent::UpdateAbilityStatus(int32 Level)

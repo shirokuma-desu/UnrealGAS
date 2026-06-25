@@ -14,6 +14,7 @@ DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Tag*/,int32 /*AbilityLevel*/)
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Status*/, const FGameplayTag&/*Slot*/, const FGameplayTag& /*PrevSlot*/ );
 DECLARE_MULTICAST_DELEGATE_OneParam(FDeactivatePassiveAbility, const FGameplayTag& /*AbilityTag*/);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FActivatePassiveEffect,const FGameplayTag& /*AbilityTag*/, bool /*bActivate*/)
 /**
  * 
  */
@@ -56,6 +57,9 @@ public:
 	void ROS_EquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Slot);
 	UFUNCTION(Client, Reliable)
 	void ROC_EquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot, const FGameplayTag& PrevSlot);
+	UFUNCTION(NetMulticast,Unreliable)
+	void MC_ActivatePassiveEffect(const FGameplayTag& AbilityTag, bool bActivate);
+	
 	
 	void UpdateAbilityStatus(int32 Level);
 	
@@ -65,6 +69,7 @@ public:
 	FAbilityStatusChanged OnAbilityStatusChangedHandler;
 	FAbilityEquipped AbilityEquipped;
 	FDeactivatePassiveAbility DeactivatePassiveAbility;
+	FActivatePassiveEffect ActivatePassiveEffect;
 	
 	bool bStartupAbilityGiven = false;
 	

@@ -11,6 +11,7 @@
 #include "Interfaces/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UPassiveNiagaraComponent;
 class UDebuffNiagaraComponent;
 class UAuraGameplayAbility;
 class UAbilitySystemComponent;
@@ -52,6 +53,7 @@ public:
 	virtual USkeletalMeshComponent* GetWeapon_Implementation() override;
 	virtual bool IsBeingShocked_Implementation() const override;
 	virtual void SetIsBeingShocked_Implementation(bool bInShock) override;
+	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TArray<FTaggedMontage> AttackMontages;
@@ -169,4 +171,15 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category= "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+	
+	UPROPERTY(EditAnywhere, Category= "VFX")
+	TObjectPtr<UPassiveNiagaraComponent> HaloOfProtection;
+	UPROPERTY(EditAnywhere, Category= "VFX")
+	TObjectPtr<UPassiveNiagaraComponent> LifeSiphon;
+	
+	UPROPERTY(EditAnywhere, Category= "VFX")
+	TObjectPtr<UPassiveNiagaraComponent> ManaSiphon;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> EffectAttachComponent;
 };

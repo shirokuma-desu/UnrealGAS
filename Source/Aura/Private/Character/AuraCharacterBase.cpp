@@ -6,6 +6,7 @@
 #include "AuraGameplayTag.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/Debuff/DebuffNiagaraComponent.h"
+#include "AbilitySystem/Passive/PassiveNiagaraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,7 +15,7 @@
 // Sets default values
 AAuraCharacterBase::AAuraCharacterBase()
 {
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 	
 	BurnDebuffComponent = CreateDefaultSubobject<UDebuffNiagaraComponent>("BurnDebuffComponent");
 	BurnDebuffComponent->SetupAttachment(GetRootComponent());
@@ -36,6 +37,18 @@ AAuraCharacterBase::AAuraCharacterBase()
 	GetMesh()->SetGenerateOverlapEvents(false);
 	
 	ECharacterClass = ECharacterClass::Elementalist;
+	
+	EffectAttachComponent = CreateDefaultSubobject<USceneComponent>("EffectAttachPoint");
+	EffectAttachComponent->SetupAttachment(GetRootComponent());
+	
+	HaloOfProtection = CreateDefaultSubobject<UPassiveNiagaraComponent>("HaloOfProtectionVFX");
+	HaloOfProtection->SetupAttachment(EffectAttachComponent);
+	
+	LifeSiphon = CreateDefaultSubobject<UPassiveNiagaraComponent>("LifeSiphon");
+	LifeSiphon->SetupAttachment(EffectAttachComponent);
+	
+	ManaSiphon = CreateDefaultSubobject<UPassiveNiagaraComponent>("ManaSiphon");
+	ManaSiphon->SetupAttachment(EffectAttachComponent);
 }
 
 void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
@@ -185,6 +198,12 @@ bool AAuraCharacterBase::IsBeingShocked_Implementation() const
 void AAuraCharacterBase::SetIsBeingShocked_Implementation(bool bInShock)
 {
 	bIsBeingShocked = bInShock;
+}
+
+void AAuraCharacterBase::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	EffectAttachComponent->SetWorldRotation(FRotator::ZeroRotator);
 }
 
 void AAuraCharacterBase::OnRep_Stunned()
