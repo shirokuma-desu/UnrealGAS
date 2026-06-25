@@ -13,7 +13,7 @@ DECLARE_MULTICAST_DELEGATE(FAbilityGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Tag*/,int32 /*AbilityLevel*/)
 DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag& /*AbilityTag*/, const FGameplayTag& /*Status*/, const FGameplayTag&/*Slot*/, const FGameplayTag& /*PrevSlot*/ );
-
+DECLARE_MULTICAST_DELEGATE_OneParam(FDeactivatePassiveAbility, const FGameplayTag& /*AbilityTag*/);
 /**
  * 
  */
@@ -58,6 +58,7 @@ public:
 	FAbilityGiven OnAbilityGivenHandler;
 	FAbilityStatusChanged OnAbilityStatusChangedHandler;
 	FAbilityEquipped AbilityEquipped;
+	FDeactivatePassiveAbility DeactivatePassiveAbility;
 	
 	bool bStartupAbilityGiven = false;
 	
