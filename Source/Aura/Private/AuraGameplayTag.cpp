@@ -167,10 +167,24 @@ void FAuraGameplayTag::InitializeNativeGameplayTag()
 	GameplayTag.Debuff_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag("Debuff.Frequency",
 		FString("Debuff Frequency"));
 	
-	
+	// hit react
 	GameplayTag.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Effects.HitReact"),
 		FString("Tag granted when Hit Reacting")
+		);
+	
+	//passive spell
+	GameplayTag.Abilities_Passive_HaloOfProtection = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.HaloOfProtection"),
+		FString("Halo of protection ")
+		);
+	GameplayTag.Abilities_Passive_LightSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.LightSiphon"),
+		FString("light siphon")
+		);
+	GameplayTag.Abilities_Passive_ManaSiphon = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Passive.ManaSiphon"),
+		FString("mana siphon")
 		);
 	
 	//player block tags
