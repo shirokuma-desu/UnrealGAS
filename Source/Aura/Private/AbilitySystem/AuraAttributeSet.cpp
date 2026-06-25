@@ -282,13 +282,17 @@ void UAuraAttributeSet::HandleIncomingXP(const FEffectProperties& Props)
 		const int32 NumLevelUps = NewLevel - CurrentLevel;
 		if (NumLevelUps > 0)
 		{
-			//TO DO: Get AttributePointsReward and Spell Reward
-			//Add To player level
-			//Add to AttributePoint and Spell Points
-			//Fill up health and mana
-			const int32 AttributePointReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter,CurrentLevel);
-			const int32 SpellPointReward = IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter,CurrentLevel);
+			
 			IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumLevelUps);
+			int32 AttributePointReward = 0;
+			int32 SpellPointReward = 0;
+			
+			for (int32 i = 0; i < NumLevelUps ; i++)
+			{
+				SpellPointReward += IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter,CurrentLevel + i);
+				AttributePointReward += IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter,CurrentLevel +i);
+			}
+			
 			IPlayerInterface::Execute_AddToAttributePoint(Props.SourceCharacter, AttributePointReward);
 			IPlayerInterface::Execute_AddToSpellPoint(Props.SourceCharacter, SpellPointReward);
 				
